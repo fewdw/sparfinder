@@ -26,7 +26,7 @@ class UserService:
 
         new_user.password = self.password_hash.hash_password(new_user.password)
 
-        self.user_repository.add_new_user(new_user)
+        return self.user_repository.add_new_user(new_user)
 
 
 

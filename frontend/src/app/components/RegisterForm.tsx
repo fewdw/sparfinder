@@ -67,11 +67,11 @@ const RegisterForm = () => {
       setMessage("");
 
       const payload = {
-        USERNAME: form.username,
-        EMAIL: form.email,
-        BIRTH_DATE: form.dob,
-        PASSWORD: form.password,
-        TYPE: form.role,
+        username: form.username,
+        email: form.email,
+        birth_date: form.dob,
+        password: form.password,
+        type: form.role,
       };
 
       try {
@@ -83,15 +83,12 @@ const RegisterForm = () => {
           body: JSON.stringify(payload),
         });
 
+        const data = await response.json();
         if (response.ok) {
-          const data = await response.json();
-          setMessage("Account created successfully!");
+          setMessage(data.message || "Account created successfully!");
           // Optionally handle success response
         } else {
-          const errorData = await response.json();
-          setMessage(
-            errorData.message || "An error occurred. Please try again."
-          );
+          setMessage(data.message || "An error occurred. Please try again.");
         }
       } catch (error) {
         setMessage("An error occurred. Please try again.");

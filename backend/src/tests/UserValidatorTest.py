@@ -13,6 +13,7 @@ class TestUserValidator(unittest.TestCase):
         ("User12", False),
         ("user@12", False),
         ("user.12", False),
+        ("fred.mao1", False),
     ])
     def test_validate_username(self, username, expected):
         validator = UserValidator()

@@ -4,16 +4,18 @@ from datetime import datetime
 
 class UserValidator:
     def is_user_valid(self, user):
-        # Orchestrating validation checks
+
         return (
                 self.validate_username(user.username) and
                 self.validate_email(user.email) and
                 self.validate_birth_date(user.birth_date) and
                 self.validate_password(user.password) and
-                self.validate_type(user.type)
+                self.validate_type(user.account_type)
         )
 
     def validate_username(self, username):
+        if not username:
+            return False
         # Check username length and character composition
         if len(username) < 5 or len(username) > 15:
             return False
@@ -24,6 +26,8 @@ class UserValidator:
         return True
 
     def validate_email(self, email):
+        if not email:
+            return False
         # Regex pattern for validating an email address
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if re.match(pattern, email):
@@ -31,6 +35,8 @@ class UserValidator:
         return False
 
     def validate_birth_date(self, birth_date):
+        if not birth_date:
+            return False
         # Validate that the user is at least 13 years old but not born before 1960
         today = datetime.now()
         thirteen_years_ago = today.replace(year=today.year - 13)
@@ -42,6 +48,8 @@ class UserValidator:
         return year_1960 <= birth_date_obj <= thirteen_years_ago
 
     def validate_password(self, password):
+        if not password:
+            return False
         # Validate password requirements
         if len(password) < 8:
             return False
@@ -53,5 +61,7 @@ class UserValidator:
         return has_upper and has_lower and has_special
 
     def validate_type(self, user_type):
+        if not user_type:
+            return False
         # Validate user type
         return user_type in ("boxer", "coach")

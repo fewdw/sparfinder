@@ -9,7 +9,7 @@ class User:
         self.birth_date = birth_date
         self.password = password
         self.account_type = account_type
-        self.UUID = uuid.uuid4()
+        self.UUID = str(uuid.uuid4())
         self.join_date = datetime.today().strftime('%Y-%m-%d')
         self.isVerified = False
 
