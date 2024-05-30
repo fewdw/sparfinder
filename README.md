@@ -5,3 +5,14 @@ The purpose of the app is to connect coaches and boxers through organized sparri
 It is built with
 NextJs, Typescript, TailwindCSS
 Flask, Python, MongoDB
+
+RUN BACKEND VENV
+source .venv/bin/activate
+deactivate
+
+INSTALL REQUIREMENTS
+pip install -r requirements.txt
+
+RUN FRONTEND
+npm install
+npm run dev
