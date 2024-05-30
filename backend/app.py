@@ -1,10 +1,10 @@
 from flask import Flask
 
-from src.example.example import example_bp
+from src.user.UserController import user_bp
 
 app = Flask(__name__)
 
-app.register_blueprint(example_bp, url_prefix='/example')
+app.register_blueprint(user_bp, url_prefix='/sparfinder/api/user')
 
 if __name__ == '__main__':
     app.run(debug=True, )
