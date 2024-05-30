@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NotLoggedNavBar from "./components/NotLoggedNavBar";
+import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import CoachSideBar from "./components/SideBar";
+import SideBar from "./components/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* 
-        
-        YOU SHOULD ADD LOGIC HERE SO THAT HEADER AND FOOTER ARE ON EVERY PAGE
-        IF USER LOGGED IN DISPLAY DIFFERENT HEADER.
+        <NavBar></NavBar>
+        <SideBar></SideBar>
 
-        */}
-        <NotLoggedNavBar></NotLoggedNavBar>
         {children}
         <Footer></Footer>
       </body>

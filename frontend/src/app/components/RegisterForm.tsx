@@ -134,55 +134,54 @@ const RegisterForm = () => {
         </div>
 
         <div>
-        <fieldset className="grid grid-cols-2 gap-4">
-  <legend className="sr-only">Role</legend>
+          <fieldset className="grid grid-cols-2 gap-4">
+            <legend className="sr-only">Role</legend>
 
-  <div>
-    <label
-      htmlFor="CoachRole"
-      className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
-    >
-      <div>
-        <p className="text-gray-700">Coach</p>
-      </div>
+            <div>
+              <label
+                htmlFor="CoachRole"
+                className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+              >
+                <div>
+                  <p className="text-gray-700">Coach</p>
+                </div>
 
-      <input
-        type="radio"
-        name="role"
-        value="coach"
-        id="CoachRole"
-        className="size-5 border-gray-300 text-blue-500"
-      />
-    </label>
-  </div>
+                <input
+                  type="radio"
+                  name="role"
+                  value="coach"
+                  id="CoachRole"
+                  className="size-5 border-gray-300 text-blue-500"
+                />
+              </label>
+            </div>
 
-  <div>
-    <label
-      htmlFor="BoxerRole"
-      className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
-    >
-      <div>
-        <p className="text-gray-700">Boxer</p>
-      </div>
+            <div>
+              <label
+                htmlFor="BoxerRole"
+                className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+              >
+                <div>
+                  <p className="text-gray-700">Boxer</p>
+                </div>
 
-      <input
-        type="radio"
-        name="role"
-        value="boxer"
-        id="BoxerRole"
-        className="size-5 border-gray-300 text-blue-500"
-      />
-    </label>
-  </div>
-</fieldset>
-
+                <input
+                  type="radio"
+                  name="role"
+                  value="boxer"
+                  id="BoxerRole"
+                  className="size-5 border-gray-300 text-blue-500"
+                />
+              </label>
+            </div>
+          </fieldset>
         </div>
 
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-500">
-            No account?&nbsp;
-            <Link className="underline" href="/register">
-              register
+            Already a member?&nbsp;
+            <Link className="underline" href="/login">
+              login
             </Link>
           </p>
           <button

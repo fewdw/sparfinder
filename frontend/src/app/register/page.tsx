@@ -1,13 +1,13 @@
-import React from 'react'
-import NotLoggedNavBar from '../components/NotLoggedNavBar'
-import RegisterForm from '../components/RegisterForm'
+import React from "react";
+import NotLoggedNavBar from "../components/NavBar";
+import RegisterForm from "../components/RegisterForm";
 
 const page = () => {
   return (
     <div>
-        <RegisterForm></RegisterForm>
+      <RegisterForm></RegisterForm>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
