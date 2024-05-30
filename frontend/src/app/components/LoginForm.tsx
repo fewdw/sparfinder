@@ -1,18 +1,17 @@
-'use client'
+"use client";
 import { error } from "console";
 import Link from "next/link";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import Popup from "./Popup";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const { searchParams } = new URL(window.location.href);
+  const register = searchParams.get("register");
+
   return (
     <div>
-      {/*
-  Heads up! 👋
-
-  Plugins:
-    - @tailwindcss/forms
-*/}
-
+      <div>{register === "true" && <Popup></Popup>}</div>
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl font-bold sm:text-3xl">Login</h1>

@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // Correct hook for App Router
+
 import {
   validateUsername,
   validateEmail,
@@ -11,6 +13,7 @@ import {
 import { CREATE_ACCOUNT_URL } from "../utils/apiConfig";
 
 const RegisterForm = () => {
+  const router = useRouter();
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -83,12 +86,15 @@ const RegisterForm = () => {
           body: JSON.stringify(payload),
         });
 
-        const data = await response.json();
         if (response.ok) {
-          setMessage(data.message || "Account created successfully!");
-          // Optionally handle success response
+          const data = await response.json();
+          setMessage("Account created successfully!");
+          router.push("/login?register=true");
         } else {
-          setMessage(data.message || "An error occurred. Please try again.");
+          const errorData = await response.json();
+          setMessage(
+            errorData.message || "An error occurred. Please try again."
+          );
         }
       } catch (error) {
         setMessage("An error occurred. Please try again.");
