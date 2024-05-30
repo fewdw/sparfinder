@@ -1,0 +1,61 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info
+dist/
+build/
+venv/
+.venv/
+.env
+
+# Flask
+instance/
+.webassets-cache/
+*.pyc
+
+# Next.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.DS_Store
+.next/
+out/
+
+# IDE/Editors
+.vscode/
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependency directories
+coverage/
+.jest/
+.flow/
+.nyc_output/
+
+# Dependency files
+package-lock.json
+yarn.lock
+
+# Environment variables file
+.env*
+
+# Build output
+/build/
+
+# Cache and compiled files
+.cache/
+.flow/
