@@ -21,9 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar></NavBar>
-        <SideBar></SideBar>
-
+        <NavBar></NavBar> {/*ONLY USE IF USER IS NOT LOGGED IN */}
+        <SideBar></SideBar> {/*ONLY USE IF USER IS LOGGED IN */}
         {children}
         <Footer></Footer>
       </body>

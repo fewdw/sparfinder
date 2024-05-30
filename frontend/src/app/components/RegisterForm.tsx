@@ -5,10 +5,12 @@ const RegisterForm = () => {
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
-        <h1 className="text-2xl font-bold sm:text-3xl">Get started today!</h1>
-        <p className="mt-4 text-gray-500">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero
-          nulla eaque error neque ipsa culpa autem, at itaque nostrum!
+        <h1 className="text-2xl font-bold sm:text-3xl text-red-500">
+          Join SparFinder Today!
+        </h1>
+        <p className="mt-4 text-blue-950">
+          SparFinder is a community with the goal of connecting boxers to grow
+          the sport!
         </p>
       </div>
 
@@ -23,19 +25,6 @@ const RegisterForm = () => {
             name="username"
             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
             placeholder="Enter username"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="PhoneNumber" className="sr-only">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id="PhoneNumber"
-            name="phone_number"
-            className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-            placeholder="Enter phone number"
           />
         </div>
 
@@ -143,7 +132,10 @@ const RegisterForm = () => {
                 className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
               >
                 <div>
-                  <p className="text-gray-700">Coach</p>
+                  <p className="text-blue-950 font-bold">Coach</p>
+                  <p className="mt-1 text-blue-950 font-light">
+                    I have a gym and I would like to create events
+                  </p>
                 </div>
 
                 <input
@@ -162,7 +154,11 @@ const RegisterForm = () => {
                 className="flex cursor-pointer justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
               >
                 <div>
-                  <p className="text-gray-700">Boxer</p>
+                  <p className="text-blue-950 font-bold">Boxer</p>
+                  <p className="mt-1 text-blue-950 font-light">
+                    I would like to find sparring partners and participate in
+                    events
+                  </p>
                 </div>
 
                 <input

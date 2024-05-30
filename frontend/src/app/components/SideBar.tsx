@@ -1,10 +1,16 @@
+import Link from "next/link";
 import React from "react";
 
 const CoachSideBar = () => {
   return (
     <div className="fixed top-0 left-0 h-full w-64 flex flex-col justify-between border-r bg-white">
       <div className="px-4 py-6 font-extrabold">
-        SparFinder.🥊
+        <div className="flex-1 md:flex md:items-center md:gap-12">
+          <Link className="block text-red-500 font-extrabold" href="/">
+            <span className="sr-only">Home</span>
+            SparFinder. 🥊
+          </Link>
+        </div>
         <ul className="mt-6 space-y-1">
           <li>
             <details className="group [&_summary::-webkit-details-marker]:hidden">
@@ -28,28 +34,28 @@ const CoachSideBar = () => {
 
               <ul className="mt-2 space-y-1 px-4">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/find/coaches"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Coaches
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/find/boxers"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Boxers
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/find/gyms"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Gyms
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </details>
@@ -77,28 +83,28 @@ const CoachSideBar = () => {
 
               <ul className="mt-2 space-y-1 px-4">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/events/my-events"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     My Events
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/events/all-events"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     All Events
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/events/waiting-list"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Waiting List
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </details>
@@ -117,7 +123,7 @@ const CoachSideBar = () => {
                   >
                     <path
                       fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 111.414 1.414l-4 4a1 1 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                       clipRule="evenodd"
                     />
                   </svg>
@@ -126,15 +132,15 @@ const CoachSideBar = () => {
 
               <ul className="mt-2 space-y-1 px-4">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/account/details"
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Details
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <form action="#">
+                  <form action="/account/logout">
                     <button
                       type="submit"
                       className="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
@@ -150,8 +156,8 @@ const CoachSideBar = () => {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
-        <a
-          href="#"
+        <Link
+          href="/account/details"
           className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
         >
           <img
@@ -168,7 +174,7 @@ const CoachSideBar = () => {
               <span>ENTER USER EMAIL HERE</span>
             </p>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
