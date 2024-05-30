@@ -1,13 +1,18 @@
 from src.user.User import User
 from src.utils.validator.UserValidator import UserValidator
+from src.user.UserRepository import UserRepository
+from src.utils.auth.PassWordHash import PassWordHash
 
 
 class UserService:
 
     def __init__(self):
         self.validator = UserValidator()
+        self.user_repository = UserRepository()
+        self.password_hash = PassWordHash()
 
     def create_account(self, req):
+
         new_user = User(
             req.get('username', None),
             req.get('email', None),
@@ -16,8 +21,12 @@ class UserService:
             req.get('type', None)
         )
 
-        self.validator.is_user_valid(new_user)
+        if not self.validator.is_user_valid(new_user):
+            return {"error": "Invalid form inputs... please follow instructions"}
 
-        # add it to the db through repository
+        new_user.password = self.password_hash.hash_password(new_user.password)
+
+        self.user_repository.add_new_user(new_user)
+
 
 

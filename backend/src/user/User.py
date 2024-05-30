@@ -12,3 +12,15 @@ class User:
         self.UUID = uuid.uuid4()
         self.join_date = datetime.today().strftime('%Y-%m-%d')
         self.isVerified = False
+
+    def to_dict(self):
+        return{
+            'username': self.username,
+            'email': self.email,
+            'birth_date': self.birth_date,
+            'password': self.password,
+            'account_type': self.account_type,
+            'UUID': self.UUID,
+            'join_date': self.join_date,
+            'isVerified': self.isVerified
+        }
