@@ -28,5 +28,18 @@ class UserService:
 
         return self.user_repository.add_new_user(new_user)
 
+    def login(self, req):
+        email = req.get('email', None)
+        password = req.get('password', None)
+
+        if not self.validator.is_login_valid(email, password):
+            return {"error": "please enter username and password correctly"}
+
+        # check db to see if it has the email
+
+        # get email and hash it and compare hashes
+
+        # if good make a jwt token and return it
+
 
 
