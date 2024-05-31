@@ -57,4 +57,4 @@ class UserService:
         }, 
         env['JWT_SECRET_KEY'], algorithm="HS256")
 
-        return token
+        return {"JWT":token}
