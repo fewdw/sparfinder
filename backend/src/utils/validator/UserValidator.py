@@ -65,3 +65,9 @@ class UserValidator:
             return False
         # Validate user type
         return user_type in ("boxer", "coach")
+
+
+    def is_login_valid(self, email, password):
+        if not email or not password:
+            return False
+        return True

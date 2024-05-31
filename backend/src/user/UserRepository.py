@@ -4,6 +4,7 @@ from bson import Binary
 import certifi
 from src.boxer.Boxer import Boxer
 from src.coach.Coach import Coach
+from src.utils.auth.PassWordHash import PassWordHash
 
 env = dotenv_values(".env")
 db_connection_string = env["DATABASE_CONNECTION_STRING"]
@@ -15,6 +16,7 @@ db = client.people
 class UserRepository:
     def __init__(self):
         self.db = db
+        self.password_hash = PassWordHash()
 
     def add_new_user(self, new_user):
 
@@ -47,3 +49,19 @@ class UserRepository:
             return {"success": f"account with username {new_user.username} created, please login"}
 
         return {"error": "we ran into an error while creating your account"}
+
+
+    def check_credentials(self, email, password):
+        query = {'email': email}
+        try:
+            user = self.db.users.find_one(query)
+        except Exception as e:
+            return {"error": str(e), "type: ": "error connecting to database"}
+
+        if not user:
+            return False
+
+        if self.password_hash.passwords_match(password, user['password']):
+            return True
+
+        return False

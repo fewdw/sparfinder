@@ -36,10 +36,11 @@ class UserService:
             return {"error": "please enter username and password correctly"}
 
         # check db to see if it has the email
+        if not self.user_repository.check_credentials(email, password):
+            return {"error": "email or password is incorrect"}
 
-        # get email and hash it and compare hashes
-
-        # if good make a jwt token and return it
+        # generate a JWT
+        return "JWT"
 
 
 
