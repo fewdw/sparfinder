@@ -2,7 +2,11 @@ from src.user.User import User
 from src.utils.validator.UserValidator import UserValidator
 from src.user.UserRepository import UserRepository
 from src.utils.auth.PassWordHash import PassWordHash
+from dotenv import dotenv_values
+import jwt
+import datetime
 
+env = dotenv_values(".env")
 
 class UserService:
 
@@ -39,8 +43,18 @@ class UserService:
         if not self.user_repository.check_credentials(email, password):
             return {"error": "email or password is incorrect"}
 
+        # get info from db 
+        user = self.user_repository.get_user_info_for_jwt(email)
+
         # generate a JWT
-        return "JWT"
+        token = jwt.encode({
+            'fname': user['fname'],
+            'lname': user['lname'],
+            'email': user['email'],
+            'profile_pic': user['profile_pic'],
+            'account_type': user['account_type'],
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=72)
+        }, 
+        env['JWT_SECRET_KEY'], algorithm="HS256")
 
-
-
+        return token

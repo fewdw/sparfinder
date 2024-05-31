@@ -65,3 +65,28 @@ class UserRepository:
             return True
 
         return False
+
+
+    def get_user_info_for_jwt(self, email):
+        user_info = db.users.find_one({'email': email},{"account_type": 1, "UUID": 1, "_id": 0})
+
+        if user_info["account_type"] == "boxer":
+            boxer_info = db.boxers.find_one({'UUID': user_info["UUID"]}, {"fname": 1, "lname": 1, "profile_pic": 1, "_id": 0})
+            return {
+                "fname": boxer_info["fname"],
+                "lname": boxer_info["lname"],
+                "email": email,
+                "profile_pic": boxer_info["profile_pic"],
+                "account_type": "boxer",
+            }
+            
+
+        if user_info["account_type"] == "coach":
+            boxer_info = db.coaches.find_one({'UUID': user_info["UUID"]}, {"fname": 1, "lname": 1, "profile_pic": 1, "_id": 0})
+            return {
+                "fname": boxer_info["fname"],
+                "lname": boxer_info["lname"],
+                "email": email,
+                "profile_pic": boxer_info["profile_pic"],
+                "account_type": "coach",
+            }
