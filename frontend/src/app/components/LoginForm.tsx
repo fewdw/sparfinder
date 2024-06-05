@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Popup from "./Popup";
 import { validateEmail, validatePassword } from "../utils/Validator";
 import { LOGIN_URL } from "../utils/apiConfig";
 import Cookies from "js-cookie";
@@ -27,7 +26,8 @@ const LoginForm = () => {
       newErrors.email = "Invalid email address.";
     }
     if (!validatePassword(password)) {
-      newErrors.password = "Password must be 8-30 characters long, contain upper and lower case letters, a digit, and a special character.";
+      newErrors.password =
+        "Password must be 8-30 characters long, contain upper and lower case letters, a digit, and a special character.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -54,7 +54,7 @@ const LoginForm = () => {
       });
 
       const data = await response.json();
-      console.log("Response data:", data);  // Log the response data
+      console.log("Response data:", data); // Log the response data
 
       if (data.error) {
         throw new Error(data.error);
@@ -62,7 +62,11 @@ const LoginForm = () => {
 
       if (data.JWT) {
         // Store JWT in a cookie
-        Cookies.set('jwt', data.JWT, { expires: 7, secure: true, sameSite: 'Strict' });
+        Cookies.set("jwt", data.JWT, {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
 
         // Handle successful login (e.g., redirect to another page)
         console.log("Login successful:", data);
@@ -71,7 +75,7 @@ const LoginForm = () => {
         throw new Error("Invalid response from server");
       }
     } catch (error) {
-      console.error("Login error:", error);  // Log the error
+      console.error("Login error:", error); // Log the error
       setErrors({ form: error.message });
     }
   };
@@ -83,9 +87,14 @@ const LoginForm = () => {
           <h1 className="text-2xl font-bold sm:text-3xl">Login</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+        >
           <div>
-            <label htmlFor="email" className="sr-only">Email</label>
+            <label htmlFor="email" className="sr-only">
+              Email
+            </label>
             <div className="relative">
               <input
                 type="email"
@@ -111,11 +120,15 @@ const LoginForm = () => {
                 </svg>
               </span>
             </div>
-            {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-2">{errors.email}</p>
+            )}
           </div>
 
           <div>
-            <label htmlFor="password" className="sr-only">Password</label>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
             <div className="relative">
               <input
                 type="password"
@@ -147,13 +160,17 @@ const LoginForm = () => {
                 </svg>
               </span>
             </div>
-            {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-2">{errors.password}</p>
+            )}
           </div>
 
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-500">
               No account?&nbsp;
-              <Link className="underline" href="/register">Register</Link>
+              <Link className="underline" href="/register">
+                Register
+              </Link>
             </p>
             <button
               type="submit"
@@ -162,7 +179,9 @@ const LoginForm = () => {
               Sign in
             </button>
           </div>
-          {errors.form && <p className="text-red-500 text-xs mt-2">{errors.form}</p>}
+          {errors.form && (
+            <p className="text-red-500 text-xs mt-2">{errors.form}</p>
+          )}
         </form>
       </div>
     </div>

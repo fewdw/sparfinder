@@ -1,13 +1,21 @@
+"use client";
+
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import LoginForm from "../components/LoginForm";
 import NotLoggedNavBar from "../components/NavBar";
+import LoginPopup from "../components/LoginPopup";
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const register = searchParams.get("register");
+
   return (
     <div>
-      <LoginForm></LoginForm>
+      {register === "true" && <LoginPopup></LoginPopup>}
+      <LoginForm />
     </div>
   );
 };
 
-export default page;
+export default Page;
