@@ -69,7 +69,7 @@ class UserRepository:
         return False
 
 
-    def get_user_info_for_jwt(self, email, db):
-        return self.auth.get_user_info_for_jwt(email, db)
+    def get_user_info_for_jwt(self, email):
+        return self.auth.get_user_info_for_jwt(email, self.db)
         
         
