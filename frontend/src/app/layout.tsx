@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import CoachSideBar from "./components/SideBar";
+import React from "react";
 import SideBar from "./components/SideBar";
+import NavBar from "./components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: " SparFinder 🥊",
+  title: "SparFinder 🥊",
   description: "SparFinder - Find your sparring partner",
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar></NavBar> {/*ONLY USE IF USER IS NOT LOGGED IN */}
-        {/*ONLY USE IF USER IS LOGGED IN <SideBar></SideBar> */}
         {children}
-        <Footer></Footer>
+        <Footer />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

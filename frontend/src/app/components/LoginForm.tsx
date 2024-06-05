@@ -9,19 +9,19 @@ import Cookies from "js-cookie";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: { [key: string]: string } = {};
     if (!validateEmail(email)) {
       newErrors.email = "Invalid email address.";
     }
@@ -33,7 +33,7 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) {
       return;
@@ -68,7 +68,7 @@ const LoginForm = () => {
           sameSite: "Strict",
         });
 
-        // Handle successful login (e.g., redirect to another page)
+        // Handle successful login (e.g., redirect to another page)wri
         console.log("Login successful:", data);
         router.push("/"); // Change the route as needed
       } else {
@@ -76,7 +76,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error("Login error:", error); // Log the error
-      setErrors({ form: error.message });
+      setErrors({ form: (error as Error).message });
     }
   };
 
@@ -176,7 +176,7 @@ const LoginForm = () => {
               type="submit"
               className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
             >
-              Sign in
+              Log in
             </button>
           </div>
           {errors.form && (

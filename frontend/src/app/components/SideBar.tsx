@@ -1,7 +1,8 @@
 import Link from "next/link";
 import React from "react";
+import UserInfo from "./UserInfo/UserInfo";
 
-const CoachSideBar = () => {
+const SideBar = () => {
   return (
     <div className="fixed top-0 left-0 h-full w-64 flex flex-col justify-between border-r bg-white">
       <div className="px-4 py-6 font-extrabold">
@@ -31,7 +32,6 @@ const CoachSideBar = () => {
                   </svg>
                 </span>
               </summary>
-
               <ul className="mt-2 space-y-1 px-4">
                 <li>
                   <Link
@@ -60,7 +60,6 @@ const CoachSideBar = () => {
               </ul>
             </details>
           </li>
-
           <li>
             <details className="group [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
@@ -80,7 +79,6 @@ const CoachSideBar = () => {
                   </svg>
                 </span>
               </summary>
-
               <ul className="mt-2 space-y-1 px-4">
                 <li>
                   <Link
@@ -117,7 +115,6 @@ const CoachSideBar = () => {
               </ul>
             </details>
           </li>
-
           <li>
             <details className="group [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
@@ -137,7 +134,6 @@ const CoachSideBar = () => {
                   </svg>
                 </span>
               </summary>
-
               <ul className="mt-2 space-y-1 px-4">
                 <li>
                   <Link
@@ -162,7 +158,6 @@ const CoachSideBar = () => {
           </li>
         </ul>
       </div>
-
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100">
         <Link
           href="/account/details"
@@ -173,13 +168,15 @@ const CoachSideBar = () => {
             src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
             className="size-10 rounded-full object-cover"
           />
-
           <div>
             <p className="text-xs">
               <strong className="block font-medium">
-                ENTER USER FNAME AND LNAME
+                <UserInfo attribute="fname" />
+                <UserInfo attribute="lname" />
               </strong>
-              <span>ENTER USER EMAIL HERE</span>
+              <span>
+                <UserInfo attribute="email" />
+              </span>
             </p>
           </div>
         </Link>
@@ -188,4 +185,4 @@ const CoachSideBar = () => {
   );
 };
 
-export default CoachSideBar;
+export default SideBar;

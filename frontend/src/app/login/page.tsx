@@ -3,7 +3,6 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import LoginForm from "../components/LoginForm";
-import NotLoggedNavBar from "../components/NavBar";
 import LoginPopup from "../components/LoginPopup";
 
 const Page = () => {
@@ -12,7 +11,7 @@ const Page = () => {
 
   return (
     <div>
-      {register === "true" && <LoginPopup></LoginPopup>}
+      {register === "true" && <LoginPopup />}
       <LoginForm />
     </div>
   );
