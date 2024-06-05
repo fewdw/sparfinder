@@ -51,6 +51,7 @@ class UserService:
             'fname': user['fname'],
             'lname': user['lname'],
             'email': user['email'],
+            'uuid': user['UUID'],
             'profile_pic': user['profile_pic'],
             'account_type': user['account_type'],
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=72)
