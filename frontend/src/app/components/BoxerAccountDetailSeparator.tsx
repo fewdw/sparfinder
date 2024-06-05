@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import GetBoxerProfileContent from "./GetBoxerProfileContent";
+import UpdateBoxerProfileForm from "./UpdateBoxerProfileForm";
 
 const BoxerAccountDetailSeparator = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Profile");
@@ -68,9 +70,15 @@ const BoxerAccountDetailSeparator = () => {
         </div>
 
         <div className="mt-4">
-          {selectedTab === "Profile" && <div>Profile content</div>}
+          {selectedTab === "Profile" && (
+            <div>
+              <GetBoxerProfileContent></GetBoxerProfileContent>
+            </div>
+          )}
           {selectedTab === "Change Profile" && (
-            <div>Change Profile content</div>
+            <div>
+              <UpdateBoxerProfileForm></UpdateBoxerProfileForm>
+            </div>
           )}
           {selectedTab === "Gym" && <div>Gym content</div>}
         </div>
