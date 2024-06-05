@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import MainPageBanner from "./components/MainPageBanner";
 import MainPageSection from "./components/MainPageSection";
 import NavBar from "./components/NavBar";
-import SideBar from "./components/SideBar";
+import MenuBar from "./components/MenuBar";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,8 +28,7 @@ export default function Home() {
   if (isLoggedIn) {
     return (
       <div>
-        <SideBar></SideBar>
-        <h1>Welcome To sparfinder, you are logged in!</h1>
+        <MenuBar></MenuBar>
       </div>
     );
   }
