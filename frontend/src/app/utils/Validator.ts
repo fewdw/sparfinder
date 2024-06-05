@@ -69,7 +69,7 @@ export const validateRoleType = (role: string): boolean => {
 
 // Validate first name and last name
 export const validateName = (name: string): boolean => {
-  const regex = /^[A-Za-z\s]{1,30}$/;
+  const regex = /^[A-Za-z\s]{3,30}$/;
   return regex.test(name);
 };
 

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import UpdateCoachProfileForm from "./UpdateCoachProfileForm";
+import GetCoachprofileContent from "./GetCoachprofileContent";
 
 const CoachAccountDetailSeparator = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Profile");
@@ -69,7 +70,11 @@ const CoachAccountDetailSeparator = () => {
         </div>
 
         <div className="mt-4">
-          {selectedTab === "Profile" && <div>Profile content</div>}
+          {selectedTab === "Profile" && (
+            <div>
+              <GetCoachprofileContent></GetCoachprofileContent>
+            </div>
+          )}
           {selectedTab === "Change profile" && (
             <div>
               <UpdateCoachProfileForm></UpdateCoachProfileForm>
