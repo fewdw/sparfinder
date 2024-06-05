@@ -1,5 +1,5 @@
 // src/tests/Validator.test.ts
-import { validateUsername, validateEmail, validateBirthdate, validatePassword, validateRoleType } from '../utils/Validator';
+import { validateUsername, validateEmail, validateBirthdate, validatePassword, validateRoleType, validateName, validateFile } from '../utils/Validator';
 
 describe('Validator Tests', () => {
   describe('validateUsername', () => {
@@ -71,6 +71,37 @@ describe('Validator Tests', () => {
       ['admin', false],
     ])('validateRoleType(%s) should return %s', (role, expected) => {
       expect(validateRoleType(role)).toBe(expected);
+    });
+  });
+
+  describe('validateName', () => {
+    test.each([
+      ['John', true],
+      ['AnnaMarie', true],
+      ['OConnor', true],
+      ['Max', true],
+      ['A', true], // Minimum length
+      ['ThisNameIsWayTooLongToBeValidThisNameIsWayTooLongToBeValid', false], // Exceeds 30 characters
+      ['John123', false], // Numbers not allowed
+    ])('validateName(%s) should return %s', (name, expected) => {
+      expect(validateName(name)).toBe(expected);
+    });
+  });
+
+  describe('validateFile', () => {
+    const generateFile = (type: string, size: number) => {
+      const blob = new Blob(["a".repeat(size)], { type });
+      const file = new File([blob], "testfile", { type });
+      return file;
+    };
+
+    test.each([
+      [generateFile("image/jpeg", 4 * 1024 * 1024), true], // Valid JPEG file under 5MB
+      [generateFile("image/png", 5 * 1024 * 1024), true], // Valid PNG file exactly 5MB
+      [generateFile("image/gif", 6 * 1024 * 1024), false], // Valid GIF file over 5MB
+      [generateFile("text/plain", 4 * 1024 * 1024), false], // Invalid text file under 5MB
+    ])('validateFile(%o) should return %s', (file, expected) => {
+      expect(validateFile(file)).toBe(expected);
     });
   });
 });

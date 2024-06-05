@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import MenuBar from "@/app/components/MenuBar";
 import CoachAccountDetailSeparator from "@/app/components/CoachAccountDetailSeparator";
 import BoxerAccountDetailSeparator from "@/app/components/BoxerAccountDetailSeparator";
+import { redirect } from "next/dist/server/api-utils";
 
 interface JwtPayload {
   fname: string;

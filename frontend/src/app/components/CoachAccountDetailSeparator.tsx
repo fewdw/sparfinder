@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import UpdateCoachProfileForm from "./UpdateCoachProfileForm";
 
 const CoachAccountDetailSeparator = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Profile");
@@ -70,7 +71,9 @@ const CoachAccountDetailSeparator = () => {
         <div className="mt-4">
           {selectedTab === "Profile" && <div>Profile content</div>}
           {selectedTab === "Change profile" && (
-            <div>Change profile content</div>
+            <div>
+              <UpdateCoachProfileForm></UpdateCoachProfileForm>
+            </div>
           )}
           {selectedTab === "Gym" && <div>Gym content</div>}
         </div>

@@ -3,8 +3,7 @@ from src.utils.validator.UserValidator import UserValidator
 from src.user.UserRepository import UserRepository
 from src.utils.auth.PassWordHash import PassWordHash
 from dotenv import dotenv_values
-import jwt
-import datetime
+from src.utils.auth.Auth import Auth
 
 env = dotenv_values(".env")
 
@@ -14,6 +13,7 @@ class UserService:
         self.validator = UserValidator()
         self.user_repository = UserRepository()
         self.password_hash = PassWordHash()
+        self.auth = Auth()
 
     def create_account(self, req):
 
@@ -47,15 +47,6 @@ class UserService:
         user = self.user_repository.get_user_info_for_jwt(email)
 
         # generate a JWT
-        token = jwt.encode({
-            'fname': user['fname'],
-            'lname': user['lname'],
-            'email': user['email'],
-            'uuid': user['UUID'],
-            'profile_pic': user['profile_pic'],
-            'account_type': user['account_type'],
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=72)
-        }, 
-        env['JWT_SECRET_KEY'], algorithm="HS256")
+        token = self.auth.create_jwt_token(user)
 
-        return {"JWT":token}
+        return {"JWT": token}

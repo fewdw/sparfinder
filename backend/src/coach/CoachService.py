@@ -7,28 +7,25 @@ class CoachService:
         self.auth = Auth()
         self.coach_repository = CoachRepository()
 
-    def get_coach_profile_by_id(self, id, req):
+    def get_coach_profile_by_id(self, req):
 
         JWT = req.get("JWT", None)
         
-        if not self.auth.coach_profile_request_matches_jwt(id, JWT):
-            return {"error":"requested id does not match profile id found in JWT"}
+        jwt_payload = self.auth.extract_jwt(JWT)
 
-        coach_profile = self.coach_repository.get_coach_profile_by_id(id)
+        coach_profile = self.coach_repository.get_coach_profile_by_id(jwt_payload['uuid'])
 
         return coach_profile
     
-    def post_coach_profile_by_id(self, id, req):
+    def post_coach_profile_by_id(self, req):
 
         JWT = req.get("JWT", None)
+
+        jwt_payload_id = self.auth.extract_jwt(JWT)['uuid']
+
         fname = req.get("fname", None)
         lname = req.get("lname", None)
         profile_pic = req.get("profile_pic", None)
-
-        # form validation for data here....
-        # use validator class
-
-        if not self.auth.coach_profile_request_matches_jwt(id, JWT):
-            return {"error":"requested id does not match profile id found in JWT"}
+        email = req.get("email", None)
         
-        return self.coach_repository.post_coach_profile_by_id(id, fname, lname, profile_pic)
+        return self.coach_repository.post_coach_profile_by_id(jwt_payload_id, fname, lname, profile_pic, email)

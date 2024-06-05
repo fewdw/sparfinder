@@ -5,6 +5,7 @@ import certifi
 from src.boxer.Boxer import Boxer
 from src.coach.Coach import Coach
 from src.utils.auth.PassWordHash import PassWordHash
+from src.utils.auth.Auth import Auth
 
 env = dotenv_values(".env")
 db_connection_string = env["DATABASE_CONNECTION_STRING"]
@@ -17,6 +18,7 @@ class UserRepository:
     def __init__(self):
         self.db = db
         self.password_hash = PassWordHash()
+        self.auth = Auth()
 
     def add_new_user(self, new_user):
 
@@ -67,28 +69,7 @@ class UserRepository:
         return False
 
 
-    def get_user_info_for_jwt(self, email):
-        user_info = db.users.find_one({'email': email},{"account_type": 1, "UUID": 1, "_id": 0})
-
-        if user_info["account_type"] == "boxer":
-            boxer_info = db.boxers.find_one({'UUID': user_info["UUID"]}, {"fname": 1, "lname": 1, "profile_pic": 1,"_id": 0})
-            return {
-                "fname": boxer_info["fname"],
-                "lname": boxer_info["lname"],
-                "email": email,
-                "profile_pic": boxer_info["profile_pic"],
-                "account_type": "boxer",
-                'UUID':user_info["UUID"]
-            }
-            
-
-        if user_info["account_type"] == "coach":
-            boxer_info = db.coaches.find_one({'UUID': user_info["UUID"]}, {"fname": 1, "lname": 1, "profile_pic": 1, "_id": 0})
-            return {
-                "fname": boxer_info["fname"],
-                "lname": boxer_info["lname"],
-                "email": email,
-                "profile_pic": boxer_info["profile_pic"],
-                "account_type": "coach",
-                'UUID':user_info["UUID"]
-            }
+    def get_user_info_for_jwt(self, email, db):
+        return self.auth.get_user_info_for_jwt(email, db)
+        
+        
