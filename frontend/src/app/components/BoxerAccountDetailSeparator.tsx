@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import GetBoxerProfileContent from "./GetBoxerProfileContent";
 import UpdateBoxerProfileForm from "./UpdateBoxerProfileForm";
+import BoxerUpdateGymForm from "./BoxerUpdateGymForm";
 
 const BoxerAccountDetailSeparator = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Profile");
@@ -80,7 +81,7 @@ const BoxerAccountDetailSeparator = () => {
               <UpdateBoxerProfileForm></UpdateBoxerProfileForm>
             </div>
           )}
-          {selectedTab === "Gym" && <div>Gym content</div>}
+          {selectedTab === "Gym" && <div><BoxerUpdateGymForm></BoxerUpdateGymForm></div>}
         </div>
       </div>
     </div>

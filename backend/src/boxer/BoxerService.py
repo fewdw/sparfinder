@@ -50,3 +50,21 @@ class BoxerService:
             weight,
             profile_pic
         )
+
+
+    def boxer_choose_gym(self, req):
+
+        try:
+
+            JWT = req.get("JWT", None)
+            gym_uuid = req.get("gym_id", None)
+
+        except Exception as e:
+            return {"error": f"there was an error getting your JWT: {str(e)}"}
+        
+        extracted_jwt = self.auth.extract_jwt(JWT)
+        
+        if extracted_jwt['account_type'] != "boxer":
+            return {"error": "You must be a boxer to choose a gym."}
+
+        return self.boxer_repository.boxer_choose_gym(gym_uuid, extracted_jwt['uuid'])

@@ -78,3 +78,11 @@ class BoxerRepository:
                 "Success":"Profile updated successfully.",
                 "JWT": token
               }
+
+
+    def boxer_choose_gym(self, gym_uuid, boxer_uuid):
+        db.boxers.update_one(
+            {"UUID": boxer_uuid},
+            {"$set": {"gym_id": gym_uuid}}
+        )
+        return {"Success": "Gym chosen successfully."}
