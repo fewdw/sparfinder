@@ -16,3 +16,6 @@ def post_boxer_profile_by_id():
 def handle_boxer_gym():
         return jsonify(boxer_service.boxer_choose_gym(request.get_json()))
 
+@boxer_bp.route('gym/info', methods=['POST'])
+def get_gym_info():
+    return jsonify(boxer_service.get_boxer_gym_info(request.get_json()))

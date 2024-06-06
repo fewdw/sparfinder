@@ -68,3 +68,8 @@ class BoxerService:
             return {"error": "You must be a boxer to choose a gym."}
 
         return self.boxer_repository.boxer_choose_gym(gym_uuid, extracted_jwt['uuid'])
+
+
+    def get_boxer_gym_info(self, req):
+        # with the JWT, get the id of the boxer, then find his gym id, then get the name of the gym..... and return it
+        pass
