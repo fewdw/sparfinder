@@ -20,11 +20,33 @@ class BoxerService:
     def post_boxer_profile_by_id(self, req):
 
         JWT = req.get("JWT", None)
+        birth_date = req.get("birth_date", None)
+        country = req.get("country", None)
+        fname = req.get("fname", None)
+        gender = req.get("gender", None)
+        level = req.get("level", None)
+        lname = req.get("lname", None)
+        num_of_fights = req.get("num_of_fights", None)
+        profile_pic = req.get("profile_pic", None)
+        stance = req.get("stance", None)
+        weight = req.get("weight", None)
 
         jwt_payload_id = self.auth.extract_jwt(JWT)['uuid']
+        jwt_payload_email = self.auth.extract_jwt(JWT)['email']
 
-        # all fields from boxer
+        # validate inputs here before posting.........
 
         return self.boxer_repository.post_boxer_profile_by_id(
-            jwt_payload_id, fname, lname, profile_pic, email
+            jwt_payload_id,
+            jwt_payload_email,
+            birth_date,
+            country,
+            fname,
+            gender,
+            level,
+            lname,
+            num_of_fights,
+            stance,
+            weight,
+            profile_pic
         )

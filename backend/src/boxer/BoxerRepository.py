@@ -36,5 +36,45 @@ class BoxerRepository:
             return {}
 
 
-    def post_boxer_profile_by_id():
-        pass
+    def post_boxer_profile_by_id(
+            self,
+            id,
+            jwt_payload_email,
+            birth_date,
+            country,
+            fname,
+            gender,
+            level,
+            lname,
+            num_of_fights,
+            stance,
+            weight,
+            profile_pic=""):
+        
+        query = {"UUID": str(id)}
+        update = {
+            "$set": {
+                "birth_date": birth_date,
+                "country": country,
+                "fname": fname,
+                "lname": lname,
+                "gender":gender,
+                "level": level,
+                "num_of_fights": num_of_fights,
+                "stance": stance,
+                "weight": weight,
+                "profile_pic": profile_pic
+            }
+        }
+        result = self.db.boxers.update_one(query, update)
+        if result.matched_count == 0:
+            return {"error" : "No profile found with the given ID."}
+        elif result.modified_count == 0:
+            return {"error" : "No update needed, the data is the same."}
+        else:
+            user = self.auth.get_user_info_for_jwt(jwt_payload_email, self.db)
+            token = self.auth.create_jwt_token(user)
+            return {
+                "Success":"Profile updated successfully.",
+                "JWT": token
+              }
