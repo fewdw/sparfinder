@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import UpdateCoachProfileForm from "./UpdateCoachProfileForm";
 import GetCoachprofileContent from "./GetCoachprofileContent";
+import CoachProfileCRUDgym from "./CoachProfileCRUDgym";
 
 const CoachAccountDetailSeparator = () => {
   const [selectedTab, setSelectedTab] = useState<string>("Profile");
@@ -80,7 +81,10 @@ const CoachAccountDetailSeparator = () => {
               <UpdateCoachProfileForm></UpdateCoachProfileForm>
             </div>
           )}
-          {selectedTab === "Gym" && <div>Gym content</div>}
+          {selectedTab === "Gym" && 
+            <div>
+              <CoachProfileCRUDgym></CoachProfileCRUDgym>
+            </div>}
         </div>
       </div>
     </div>

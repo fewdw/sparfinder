@@ -97,3 +97,15 @@ export const validateWeight = (weight: string): boolean => {
 export const validateNumber = (number: string): boolean => {
   return /^\d+$/.test(number) && parseInt(number) > 0;
 };
+
+// Validate gym name
+export const validateGymName = (name: string): boolean => {
+  const regex = /^[A-Za-z0-9\s]{5,50}$/;
+  return regex.test(name);
+};
+
+// Validate gym address
+export const validateGymAddress = (address: string): boolean => {
+  const regex = /^[A-Za-z0-9\s]{10,500}$/;
+  return regex.test(address);
+};
