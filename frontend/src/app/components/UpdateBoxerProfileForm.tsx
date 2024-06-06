@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { UPDATE_BOXER_URL } from "../utils/apiConfig";
 import {
   validateName,
@@ -67,10 +67,21 @@ const UpdateBoxerProfileForm = () => {
     if (!validateForm()) return;
 
     const jwtToken = Cookies.get("jwt");
+    const { email } = jwtDecode(jwtToken);
+
     const payload = {
       JWT: jwtToken,
-      ...formData,
-      email: jwtDecode(jwtToken).email,
+      birth_date: formData.birthDate,
+      country: formData.country,
+      fname: formData.fname,
+      gender: formData.gender,
+      level: formData.level,
+      lname: formData.lname,
+      num_of_fights: parseInt(formData.numOfFights),
+      profile_pic: "", // Assuming placeholder, adjust as necessary
+      stance: formData.stance,
+      weight: parseInt(formData.weight),
+      email,
     };
 
     try {
@@ -83,6 +94,7 @@ const UpdateBoxerProfileForm = () => {
       const data = await response.json();
       if (!response.ok)
         throw new Error(data.error || "Failed to update profile");
+
       Cookies.set("jwt", data.JWT, {
         expires: 7,
         secure: true,
