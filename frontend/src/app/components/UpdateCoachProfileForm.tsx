@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { CHANGE_COACH_URL } from "../utils/apiConfig";
-import { validateName, validateFile } from "../utils/Validator";
+import { validateName } from "../utils/Validator";
 
 const UpdateCoachProfileForm = () => {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleFnameChange = (e) => {
@@ -18,23 +17,6 @@ const UpdateCoachProfileForm = () => {
     setLname(e.target.value);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && validateFile(file)) {
-      const reader = new FileReader();
-      reader.onload = (loadEvent) => {
-        const base64String = loadEvent.target.result;
-        setProfilePic(base64String);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        profilePic: "Invalid file. Please upload a valid image.",
-      }));
-    }
-  };
-
   const validateForm = () => {
     const newErrors = {};
     if (!validateName(fname)) {
@@ -42,9 +24,6 @@ const UpdateCoachProfileForm = () => {
     }
     if (!validateName(lname)) {
       newErrors.lname = "Invalid last name.";
-    }
-    if (!profilePic) {
-      newErrors.profilePic = "Profile picture is required.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -64,7 +43,6 @@ const UpdateCoachProfileForm = () => {
       fname,
       lname,
       email,
-      profile_pic: profilePic,
     };
 
     try {
@@ -136,22 +114,6 @@ const UpdateCoachProfileForm = () => {
           />
           {errors.lname && (
             <p className="text-red-500 text-xs mt-2">{errors.lname}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="profilePic" className="sr-only">
-            Profile Picture
-          </label>
-          <input
-            type="file"
-            id="profilePic"
-            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
-            onChange={handleFileChange}
-            accept="image/jpeg, image/png, image/gif"
-          />
-          {errors.profilePic && (
-            <p className="text-red-500 text-xs mt-2">{errors.profilePic}</p>
           )}
         </div>
 

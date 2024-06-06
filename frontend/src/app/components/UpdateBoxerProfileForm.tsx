@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { UPDATE_BOXER_URL } from "../utils/apiConfig";
 import {
   validateName,
   validateDate,
   validateNumber,
-  validateFile,
+  validateSelect,
+  validateNumOfFights,
+  validateWeight,
 } from "../utils/Validator";
 
 const UpdateBoxerProfileForm = () => {
@@ -17,10 +19,9 @@ const UpdateBoxerProfileForm = () => {
     country: "",
     gender: "",
     level: "",
-    numOfFights: 0,
-    weight: 0,
+    numOfFights: "",
+    weight: "",
     stance: "",
-    profilePic: null,
   });
   const [errors, setErrors] = useState({});
 
@@ -29,36 +30,34 @@ const UpdateBoxerProfileForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && validateFile(file)) {
-      const reader = new FileReader();
-      reader.onload = (loadEvent) => {
-        setFormData((prev) => ({
-          ...prev,
-          profilePic: loadEvent.target.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setErrors((prev) => ({
-        ...prev,
-        profilePic: "Invalid file type. Please upload a valid image.",
-      }));
-    }
-  };
-
   const validateForm = () => {
     let newErrors = {};
     if (!validateName(formData.fname)) newErrors.fname = "Invalid first name.";
     if (!validateName(formData.lname)) newErrors.lname = "Invalid last name.";
     if (!validateDate(formData.birthDate))
       newErrors.birthDate = "Invalid birth date.";
-    if (!validateNumber(formData.numOfFights))
+    if (!validateNumOfFights(formData.numOfFights))
       newErrors.numOfFights = "Invalid number of fights.";
-    if (!validateNumber(formData.weight)) newErrors.weight = "Invalid weight.";
-    if (!formData.profilePic)
-      newErrors.profilePic = "Profile picture is required.";
+    if (!validateWeight(formData.weight)) newErrors.weight = "Invalid weight.";
+    if (
+      !validateSelect(formData.country, [
+        "Canada",
+        "US",
+        "Mexico",
+        "UK",
+        "France",
+        "Germany",
+        "Italy",
+        "Spain",
+      ])
+    )
+      newErrors.country = "Invalid country.";
+    if (!validateSelect(formData.gender, ["Male", "Female"]))
+      newErrors.gender = "Invalid gender.";
+    if (!validateSelect(formData.level, ["Recreational", "Amateur", "Pro"]))
+      newErrors.level = "Invalid level.";
+    if (!validateSelect(formData.stance, ["Orthodox", "Southpaw"]))
+      newErrors.stance = "Invalid stance.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -106,86 +105,267 @@ const UpdateBoxerProfileForm = () => {
         onSubmit={handleSubmit}
         className="mx-auto mb-0 mt-8 max-w-md space-y-4"
       >
-        <input
-          type="text"
-          name="fname"
-          value={formData.fname}
-          onChange={handleChange}
-          placeholder="First Name"
-        />
-        {errors.fname && <p>{errors.fname}</p>}
-        <input
-          type="text"
-          name="lname"
-          value={formData.lname}
-          onChange={handleChange}
-          placeholder="Last Name"
-        />
-        {errors.lname && <p>{errors.lname}</p>}
-        <input
-          type="date"
-          name="birthDate"
-          value={formData.birthDate}
-          onChange={handleChange}
-        />
-        {errors.birthDate && <p>{errors.birthDate}</p>}
-        <input
-          type="text"
-          name="country"
-          value={formData.country}
-          onChange={handleChange}
-          placeholder="Country"
-        />
-        <div>
+        <div className="space-y-2">
+          <label htmlFor="fname" className="block font-medium text-gray-700">
+            First Name
+          </label>
           <input
-            type="radio"
-            name="gender"
-            value="Male"
+            type="text"
+            name="fname"
+            id="fname"
+            value={formData.fname}
             onChange={handleChange}
-            checked={formData.gender === "Male"}
-          />{" "}
-          Male
-          <input
-            type="radio"
-            name="gender"
-            value="Female"
-            onChange={handleChange}
-            checked={formData.gender === "Female"}
-          />{" "}
-          Female
+            placeholder="Enter your first name"
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
+          />
+          {errors.fname && (
+            <p className="text-red-500 text-xs mt-2">{errors.fname}</p>
+          )}
         </div>
-        <input
-          type="text"
-          name="level"
-          value={formData.level}
-          onChange={handleChange}
-          placeholder="Level"
-        />
-        <input
-          type="number"
-          name="numOfFights"
-          value={formData.numOfFights}
-          onChange={handleChange}
-          placeholder="Number of Fights"
-        />
-        {errors.numOfFights && <p>{errors.numOfFights}</p>}
-        <input
-          type="number"
-          name="weight"
-          value={formData.weight}
-          onChange={handleChange}
-          placeholder="Weight"
-        />
-        {errors.weight && <p>{errors.weight}</p>}
-        <select name="stance" value={formData.stance} onChange={handleChange}>
-          <option value="">Select Stance</option>
-          <option value="Orthodox">Orthodox</option>
-          <option value="Southpaw">Southpaw</option>
-        </select>
-        <input type="file" onChange={handleFileChange} accept="image/*" />
-        {errors.profilePic && <p>{errors.profilePic}</p>}
-        <button type="submit">Update Profile</button>
-        {errors.form && <p>{errors.form}</p>}
+
+        <div className="space-y-2">
+          <label htmlFor="lname" className="block font-medium text-gray-700">
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="lname"
+            id="lname"
+            value={formData.lname}
+            onChange={handleChange}
+            placeholder="Enter your last name"
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
+          />
+          {errors.lname && (
+            <p className="text-red-500 text-xs mt-2">{errors.lname}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label
+            htmlFor="birthDate"
+            className="block font-medium text-gray-700"
+          >
+            Birth Date
+          </label>
+          <input
+            type="date"
+            name="birthDate"
+            id="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
+          />
+          {errors.birthDate && (
+            <p className="text-red-500 text-xs mt-2">{errors.birthDate}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="country" className="block font-medium text-gray-700">
+            Country
+          </label>
+          <select
+            name="country"
+            id="country"
+            value={formData.country}
+            onChange={handleChange}
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
+          >
+            <option value="">Select Country</option>
+            <option value="Canada">Canada</option>
+            <option value="US">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="UK">United Kingdom</option>
+            <option value="France">France</option>
+            <option value="Germany">Germany</option>
+            <option value="Italy">Italy</option>
+            <option value="Spain">Spain</option>
+          </select>
+        </div>
+
+        <fieldset className="space-y-4">
+          <legend className="block font-medium text-gray-700">Gender</legend>
+          <div>
+            <label
+              htmlFor="male"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Male</span>
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                id="male"
+                className="sr-only"
+                checked={formData.gender === "Male"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor="female"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Female</span>
+              <input
+                type="radio"
+                name="gender"
+                value="Female"
+                id="female"
+                className="sr-only"
+                checked={formData.gender === "Female"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset className="space-y-4">
+          <legend className="block font-medium text-gray-700">Level</legend>
+          <div>
+            <label
+              htmlFor="recreational"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Recreational</span>
+              <input
+                type="radio"
+                name="level"
+                value="Recreational"
+                id="recreational"
+                className="sr-only"
+                checked={formData.level === "Recreational"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor="amateur"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Amateur</span>
+              <input
+                type="radio"
+                name="level"
+                value="Amateur"
+                id="amateur"
+                className="sr-only"
+                checked={formData.level === "Amateur"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor="pro"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Pro</span>
+              <input
+                type="radio"
+                name="level"
+                value="Pro"
+                id="pro"
+                className="sr-only"
+                checked={formData.level === "Pro"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        </fieldset>
+
+        <div className="space-y-2">
+          <label
+            htmlFor="numOfFights"
+            className="block font-medium text-gray-700"
+          >
+            Number of Fights
+          </label>
+          <select
+            name="numOfFights"
+            id="numOfFights"
+            value={formData.numOfFights}
+            onChange={handleChange}
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
+          >
+            <option value="">Select Range</option>
+            <option value="0-5">0-5</option>
+            <option value="5-15">5-15</option>
+            <option value="15-30">15-30</option>
+            <option value="30-60">30-60</option>
+            <option value="60-100">60-100</option>
+            <option value="100+">100+</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="weight" className="block font-medium text-gray-700">
+            Weight (lbs)
+          </label>
+          <input
+            type="number"
+            name="weight"
+            id="weight"
+            value={formData.weight}
+            onChange={handleChange}
+            placeholder="Enter your weight in lbs"
+            className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+          />
+          {errors.weight && (
+            <p className="text-red-500 text-xs mt-2">{errors.weight}</p>
+          )}
+        </div>
+
+        <fieldset className="space-y-4">
+          <legend className="block font-medium text-gray-700">Stance</legend>
+          <div>
+            <label
+              htmlFor="orthodox"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Orthodox</span>
+              <input
+                type="radio"
+                name="stance"
+                value="Orthodox"
+                id="orthodox"
+                className="sr-only"
+                checked={formData.stance === "Orthodox"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              htmlFor="southpaw"
+              className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-100 bg-white p-4 text-sm font-medium shadow-sm hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:ring-1 has-[:checked]:ring-blue-500"
+            >
+              <span>Southpaw</span>
+              <input
+                type="radio"
+                name="stance"
+                value="Southpaw"
+                id="southpaw"
+                className="sr-only"
+                checked={formData.stance === "Southpaw"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        </fieldset>
+
+        <button
+          type="submit"
+          className="w-full rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white shadow"
+        >
+          Update Profile
+        </button>
+        {errors.form && (
+          <p className="text-red-500 text-xs mt-2">{errors.form}</p>
+        )}
       </form>
     </div>
   );

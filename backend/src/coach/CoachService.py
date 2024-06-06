@@ -28,4 +28,4 @@ class CoachService:
         profile_pic = req.get("profile_pic", None)
         email = req.get("email", None)
         
-        return self.coach_repository.post_coach_profile_by_id(jwt_payload_id, fname, lname, profile_pic, email)
+        return self.coach_repository.post_coach_profile_by_id(jwt_payload_id, fname, lname, email, profile_pic)

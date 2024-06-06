@@ -12,15 +12,15 @@ export const validateEmail = (email: string): boolean => {
   return regex.test(email);
 };
 
-// Validate birthdate
-export const validateBirthdate = (birthdate: string): boolean => {
+// Validate date with specific age range for birthdate
+export const validateDate = (date: string): boolean => {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!regex.test(birthdate)) {
+  if (!regex.test(date)) {
     return false;
   }
   
-  const birthDate = new Date(birthdate);
-  if (isNaN(birthDate.getTime())) {
+  const inputDate = new Date(date);
+  if (isNaN(inputDate.getTime())) {
     return false;
   }
   
@@ -30,12 +30,8 @@ export const validateBirthdate = (birthdate: string): boolean => {
   const minAgeDate = new Date(currentDate.setFullYear(currentYear - 13));
   const maxAgeDate = new Date(currentDate.setFullYear(currentYear - 65));
   
-  if (birthDate > minAgeDate) {
-    return false; // User is younger than 13
-  }
-  
-  if (birthDate < maxAgeDate) {
-    return false; // User is older than 65
+  if (inputDate > minAgeDate || inputDate < maxAgeDate) {
+    return false;
   }
   
   return true;
@@ -79,4 +75,25 @@ export const validateFile = (file: File): boolean => {
   const validFormats = ["image/jpeg", "image/png", "image/gif"];
 
   return file.size <= maxSize && validFormats.includes(file.type);
+};
+
+// Validate select field (Country, Level, Stance, Gender)
+export const validateSelect = (value: string, validValues: string[]): boolean => {
+  return validValues.includes(value);
+};
+
+// Validate number of fights
+export const validateNumOfFights = (numOfFights: string): boolean => {
+  const validRanges = ["0-5", "5-15", "15-30", "30-60", "60-100", "100+"];
+  return validateSelect(numOfFights, validRanges);
+};
+
+// Validate weight as a positive number
+export const validateWeight = (weight: string): boolean => {
+  return /^\d+$/.test(weight) && parseInt(weight) > 0;
+};
+
+// General number validation for weights and other numeric inputs
+export const validateNumber = (number: string): boolean => {
+  return /^\d+$/.test(number) && parseInt(number) > 0;
 };

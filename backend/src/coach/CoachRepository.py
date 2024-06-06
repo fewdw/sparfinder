@@ -24,7 +24,7 @@ class CoachRepository:
         else:
             return {}
         
-    def post_coach_profile_by_id(self, id, fname, lname, profile_pic, email):
+    def post_coach_profile_by_id(self, id, fname, lname, email, profile_pic=" "):
         query = {"UUID": str(id)}
         update = {
             "$set": {
