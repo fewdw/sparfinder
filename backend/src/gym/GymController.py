@@ -14,3 +14,8 @@ def handle_gym():
         return jsonify(gym_service.post_new_gym(request.get_json()))
     elif request.method == 'DELETE':
         return jsonify(gym_service.delete_gym(request.get_json()))
+
+
+@gym_bp.route('/gyms', methods=['GET'])
+def get_gyms_names():
+    return jsonify(gym_service.get_gyms_names())

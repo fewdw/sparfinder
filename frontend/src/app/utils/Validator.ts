@@ -109,3 +109,33 @@ export const validateGymAddress = (address: string): boolean => {
   const regex = /^[A-Za-z0-9\s]{10,500}$/;
   return regex.test(address);
 };
+
+  // Validate birthdate
+  export const validateBirthdate = (birthdate: string): boolean => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(birthdate)) {
+      return false;
+    }
+    
+    const birthDate = new Date(birthdate);
+    if (isNaN(birthDate.getTime())) {
+      return false;
+    }
+    
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    
+    const minAgeDate = new Date(currentDate.setFullYear(currentYear - 13));
+    const maxAgeDate = new Date(currentDate.setFullYear(currentYear - 65));
+    
+    if (birthDate > minAgeDate) {
+      return false; // User is younger than 13
+    }
+    
+    if (birthDate < maxAgeDate) {
+      return false; // User is older than 65
+    }
+    
+    return true;
+  };
+

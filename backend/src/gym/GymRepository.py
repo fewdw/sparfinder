@@ -44,3 +44,9 @@ class GymRepository:
             return {"error": "No gym found for this coach"}
 
         return {"status": "success"}
+
+
+    # this function is used for when a boxer wants to join a gym
+    def get_gyms_names(self):
+        gyms = self.db.gyms.find({}, {"name": 1, "_id": 0})
+        return list(gyms)

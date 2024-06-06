@@ -61,3 +61,7 @@ class GymService:
             return {"error": "You are not authorized to delete this gym"}
 
         return self.gym_repository.delete_gym(jwt_payload['uuid'])
+
+
+    def get_gyms_names(self):
+        return self.gym_repository.get_gyms_names()
