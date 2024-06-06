@@ -28,6 +28,7 @@ class GymService:
         name = req.get("name", None)
         address = req.get("address", None)
         rules = req.get("rules", None)
+        level = req.get("level", None)
 
         jwt_payload = self.auth.extract_jwt(JWT)
         if not jwt_payload:
@@ -43,7 +44,7 @@ class GymService:
 
 
         # create a new gym
-        new_gym = Gym(name, address, coach_id, rules)
+        new_gym = Gym(name, address, coach_id, rules, level)
 
         # place it in the database(gym, coach id)
         return self.gym_repository.post_new_gym(new_gym, coach_id)

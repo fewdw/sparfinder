@@ -2,7 +2,7 @@ import uuid
 
 class Gym:
 
-    def __init__(self, name, address, coach_id, rules):
+    def __init__(self, name, address, coach_id, rules, level):
         self.name = name
         self.address = address
         self.UUID = str(uuid.uuid4())
@@ -11,7 +11,7 @@ class Gym:
         self.rating = 0
         self.num_of_ratings = 0
         self.events = []
-        self.level = ""
+        self.level = level
         self.pic = ""
         self.rules = rules
 
