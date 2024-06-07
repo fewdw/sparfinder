@@ -42,7 +42,7 @@ class GymRepository:
     def delete_gym(self, coach_id):
         query = {"coaches": coach_id}
         result = self.db.gyms.delete_one(query)
-        self.coach_db.coaches.update_one({"UUID": coach_id}, {"$set": {"gym_id": None}})
+        self.coach_db.coaches.update_one({"UUID": coach_id}, {"$set": {"gym_id": ""}})
 
         if result.deleted_count == 0:
             return {"error": "No gym found for this coach"}
