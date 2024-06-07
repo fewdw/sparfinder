@@ -29,3 +29,6 @@ class CoachService:
         email = req.get("email", None)
         
         return self.coach_repository.post_coach_profile_by_id(jwt_payload_id, fname, lname, email, profile_pic)
+
+    def get_all_coaches(self):
+        return self.coach_repository.get_all_coaches()

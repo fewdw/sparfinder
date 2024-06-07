@@ -46,3 +46,7 @@ class CoachRepository:
                 "JWT": token
                 }
 
+    def get_all_coaches(self):
+        fields = {"fname": 1, "lname": 1, "profile_pic": 1, "gym_id":1, "_id": 0}
+        results = self.db.coaches.find({}, fields)
+        return list(results)
