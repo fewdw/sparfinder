@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { GET_BOXER_CURRENT_GYM_NAME } from '../utils/apiConfig';
+import { GET_ALL_GYM_NAMES } from '../utils/apiConfig';
+import { BOXER_ASSOCIATE_GYM } from '../utils/apiConfig';
 
 const BoxerUpdateGymForm = () => {
   const [currentGym, setCurrentGym] = useState('');
@@ -12,7 +15,7 @@ const BoxerUpdateGymForm = () => {
     const jwtToken = Cookies.get('jwt');
     const fetchCurrentGym = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/sparfinder/api/boxer/gym/name', {
+        const response = await fetch(GET_BOXER_CURRENT_GYM_NAME, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -36,7 +39,7 @@ const BoxerUpdateGymForm = () => {
 
     const fetchAllGyms = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/sparfinder/api/gym/gyms');
+        const response = await fetch(GET_ALL_GYM_NAMES);
         const data = await response.json();
         if (!response.ok) {
           throw new Error('Failed to fetch gyms');
@@ -56,7 +59,7 @@ const BoxerUpdateGymForm = () => {
   const handleAssociate = async () => {
     const jwtToken = Cookies.get('jwt');
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/boxer/gym', {
+      const response = await fetch(BOXER_ASSOCIATE_GYM, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -7,10 +7,12 @@ db_connection_string = env["DATABASE_CONNECTION_STRING"]
 
 client = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
 db = client.gyms
+coach_db = client.people
 
 class GymRepository:
     def __init__(self):
         self.db = db
+        self.coach_db = coach_db
 
     def get_gym_coach_by_id(self, coach_id):
 
@@ -32,6 +34,7 @@ class GymRepository:
 
         try:
             self.db.gyms.insert_one(gym.to_dict())
+            self.coach_db.coaches.update_one({"UUID": coach_id}, {"$set": {"gym_id": gym.UUID}})
             return {"status": "success"}
         except Exception as e:
             return {"error": str(e)}
@@ -39,6 +42,7 @@ class GymRepository:
     def delete_gym(self, coach_id):
         query = {"coaches": coach_id}
         result = self.db.gyms.delete_one(query)
+        self.coach_db.coaches.update_one({"UUID": coach_id}, {"$set": {"gym_id": None}})
 
         if result.deleted_count == 0:
             return {"error": "No gym found for this coach"}
