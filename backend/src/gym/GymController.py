@@ -19,3 +19,7 @@ def handle_gym():
 @gym_bp.route('/gyms', methods=['GET'])
 def get_gyms_names():
     return jsonify(gym_service.get_gyms_names())
+
+@gym_bp.route('/<gym_id>', methods=['GET'])
+def get_gym_by_id(gym_id):
+    return jsonify(gym_service.get_gym_by_id(gym_id))

@@ -54,3 +54,23 @@ class GymRepository:
     def get_gyms_names(self):
         gyms = self.db.gyms.find({}, {"name": 1, "UUID":1, "_id": 0})
         return list(gyms)
+
+
+    def get_gym_by_id(self, gym_id):
+        query = {"UUID": gym_id}
+        fields = {
+            "_id": 0,
+            "name": 1,
+            "address": 1,
+            "rules": 1,
+            "level": 1,
+            "coaches": 1,
+            "UUID": 1,
+            "events":1
+        }
+        gym = self.db.gyms.find_one(query, fields)
+
+        if not gym:
+            return {"error": "No gym found for this ID"}
+
+        return gym

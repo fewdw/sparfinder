@@ -65,3 +65,11 @@ class GymService:
 
     def get_gyms_names(self):
         return self.gym_repository.get_gyms_names()
+
+
+    def get_gym_by_id(self, id):
+
+        if not id:
+            return {"error": "No id provided"}
+
+        return self.gym_repository.get_gym_by_id(id)
