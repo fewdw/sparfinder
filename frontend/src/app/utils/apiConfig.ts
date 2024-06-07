@@ -11,3 +11,4 @@ export const GET_BOXER_CURRENT_GYM_NAME = `${BASE_URL}/sparfinder/api/boxer/gym/
 export const GET_ALL_GYM_NAMES = `${BASE_URL}/sparfinder/api/gym/gyms`;
 export const BOXER_ASSOCIATE_GYM = `${BASE_URL}/sparfinder/api/boxer/gym`;
 export const GET_ALL_COACHES_URL = `${BASE_URL}/sparfinder/api/coach/`;
+export const GET_GYM_BY_ID = `${BASE_URL}/sparfinder/api/gym/`;
