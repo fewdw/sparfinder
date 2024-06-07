@@ -8,11 +8,13 @@ db_connection_string = env["DATABASE_CONNECTION_STRING"]
 
 client = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
 db = client.people
+gyms = client.gyms
 
 class BoxerRepository:
     def __init__(self):
         self.db = db
         self.auth = Auth()
+        self.gyms = gyms
 
     def get_boxer_profile_by_id(self, id):
         query = {"UUID": str(id)}
@@ -86,3 +88,29 @@ class BoxerRepository:
             {"$set": {"gym_id": gym_uuid}}
         )
         return {"Success": "Gym chosen successfully."}
+
+
+    def get_boxer_gym_info(self, boxer_id):
+        query = {"UUID": boxer_id}
+        fields = {
+            "_id": 0,
+            "gym_id": 1
+        }
+        gym = db.boxers.find_one(query, fields)
+
+        if not gym:
+            return {"error": "boxer not found."}
+
+        query = {"UUID": gym["gym_id"]}
+        fields = {
+            "_id": 0,
+            "name": 1
+        }
+
+        gym = gyms.gyms.find_one(query, fields)
+        
+        if not gym:
+            return {"error": "No gym found for this boxer."}
+
+        return gym
+

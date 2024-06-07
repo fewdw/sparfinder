@@ -72,4 +72,13 @@ class BoxerService:
 
     def get_boxer_gym_info(self, req):
         # with the JWT, get the id of the boxer, then find his gym id, then get the name of the gym..... and return it
-        pass
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+        except Exception as e:
+            return {"error": f"there was an error getting your JWT: {str(e)}"}
+
+        if extracted_jwt['account_type'] != "boxer":
+            return {"error": "You must be a boxer to get your gym name"}
+
+        return self.boxer_repository.get_boxer_gym_info(extracted_jwt['uuid'])
