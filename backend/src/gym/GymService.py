@@ -73,3 +73,9 @@ class GymService:
             return {"error": "No id provided"}
 
         return self.gym_repository.get_gym_by_id(id)
+
+
+    def get_gym_boxers(self, gym_id):
+        if not gym_id:
+            return {"error": "No gym id provided"}
+        return self.gym_repository.get_gym_boxers(gym_id)

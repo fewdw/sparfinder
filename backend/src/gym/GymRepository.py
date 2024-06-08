@@ -8,11 +8,13 @@ db_connection_string = env["DATABASE_CONNECTION_STRING"]
 client = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
 db = client.gyms
 coach_db = client.people
+boxers_db = client.people
 
 class GymRepository:
     def __init__(self):
         self.db = db
         self.coach_db = coach_db
+        self.boxers_db = boxers_db
 
     def get_gym_coach_by_id(self, coach_id):
 
@@ -74,3 +76,23 @@ class GymRepository:
             return {"error": "No gym found for this ID"}
 
         return gym
+
+
+    def get_gym_boxers(self, gym_id):
+        query = {"gym_id": gym_id}
+        fields = {
+            "_id": 0,
+            "UUID": 1,
+            "num_of_fights": 1,
+            "weight": 1,
+            "fname": 1,
+            "lname": 1,
+            "gender": 1,
+            "country": 1,
+            "birth_date": 1,
+            "stance": 1,
+            "level": 1,
+        }
+        boxers = self.boxers_db.boxers.find(query, fields)
+
+        return list(boxers)
