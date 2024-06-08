@@ -96,3 +96,20 @@ class GymRepository:
         boxers = self.boxers_db.boxers.find(query, fields)
 
         return list(boxers)
+
+    def get_gym_coaches(self, gym_id):
+        query = {"gym_id": gym_id}
+        fields = {
+            "_id": 0,
+            "fname": 1,
+            "lname": 1,
+        }
+
+        coaches = self.coach_db.coaches.find(query, fields)
+
+        return list(coaches)
+
+
+    def get_all_gyms_for_find_gyms(self):
+        gyms = self.db.gyms.find({}, {"name": 1, "address": 1, "_id": 0, "UUID":1})
+        return list(gyms)

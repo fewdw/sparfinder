@@ -27,3 +27,11 @@ def get_gym_by_id(gym_id):
 @gym_bp.route('/<gym_id>/boxers', methods=['GET'])
 def get_gym_boxers(gym_id):
     return jsonify(gym_service.get_gym_boxers(gym_id))
+
+@gym_bp.route('/<gym_id>/coaches', methods=['GET'])
+def get_gym_coaches(gym_id):
+    return jsonify(gym_service.get_gym_coaches(gym_id))
+
+@gym_bp.route('/', methods=['GET'])
+def get_all_gyms_for_find_gyms():
+    return jsonify(gym_service.get_all_gyms_for_find_gyms())
