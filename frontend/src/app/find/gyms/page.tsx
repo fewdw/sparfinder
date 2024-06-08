@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import MenuBar from "@/app/components/MenuBar";
 import { GET_ALL_GYMS_FOR_PROFILE_PAGE } from "@/app/utils/apiConfig";
+import Link from "next/link";
 
 const Page = () => {
   const [gyms, setGyms] = useState([]);
@@ -70,9 +71,9 @@ const Page = () => {
           {filteredGyms.map((gym) => (
             <article key={gym.UUID} className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
               <div className="p-4 sm:p-6">
-                <a href={`/find/gyms/gym/${gym.UUID}`}>
+                <Link href={`/find/gyms/gym/${gym.UUID}`}>
                   <h3 className="text-lg font-medium text-gray-900">{gym.name}</h3>
-                </a>
+                </Link>
                 <p className="mt-2 text-sm text-gray-500">{gym.address}</p>
                 <a href={`/find/gyms/gym/${gym.UUID}`} className="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
                   View Gym Profile
