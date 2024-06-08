@@ -105,3 +105,9 @@ class BoxerService:
             }
 
         return self.boxer_repository.get_all_boxers(filters)
+
+
+    def get_boxer_by_id(self, boxer_id):
+        if not id:
+            return {"error": "No boxer id provided."}
+        return self.boxer_repository.get_boxer_by_id(boxer_id)

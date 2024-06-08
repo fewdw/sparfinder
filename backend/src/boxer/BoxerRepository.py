@@ -132,3 +132,25 @@ class BoxerRepository:
         }
         return list(self.db.boxers.find(filters, fields))
 
+    def get_boxer_by_id(self, boxer_id):
+        query = {"UUID": boxer_id}
+        fields = {
+            "_id": 0,
+            "UUID": 1,
+            "num_of_fights": 1,
+            "weight": 1,
+            "fname": 1,
+            "lname": 1,
+            "gender": 1,
+            "country": 1,
+            "birth_date": 1,
+            "stance": 1,
+            "level": 1,
+            "gym_id": 1
+        }
+        boxer = self.db.boxers.find_one(query, fields)
+
+        if not boxer:
+            return {"error": "boxer not found."}
+
+        return boxer

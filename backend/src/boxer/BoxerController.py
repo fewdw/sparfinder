@@ -25,3 +25,7 @@ def get_gym_info():
 def get_all_boxers():
     req_filters = request.args.to_dict()
     return jsonify(boxer_service.get_all_boxers(req_filters))
+
+@boxer_bp.route('/<boxer_id>', methods=['GET'])
+def get_boxer_by_id(boxer_id):
+    return jsonify(boxer_service.get_boxer_by_id(boxer_id))
