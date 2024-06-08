@@ -18,3 +18,4 @@ export function getBoxersFromGymById(id: string) {
   export function getCoachesFromGymById(id: string) {
     return `${BASE_URL}/sparfinder/api/gym/${id}/coaches`;
   }
+export const GET_ALL_GYMS_FOR_PROFILE_PAGE = `${BASE_URL}/sparfinder/api/gym/`;
