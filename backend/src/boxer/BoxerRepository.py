@@ -114,3 +114,21 @@ class BoxerRepository:
 
         return gym
 
+
+    def get_all_boxers(self, filters):
+        fields = {
+            "_id": 0,
+            "UUID": 1,
+            "num_of_fights": 1,
+            "weight": 1,
+            "fname": 1,
+            "lname": 1,
+            "gender": 1,
+            "country": 1,
+            "birth_date": 1,
+            "stance": 1,
+            "level": 1,
+            "gym_id": 1
+        }
+        return list(self.db.boxers.find(filters, fields))
+

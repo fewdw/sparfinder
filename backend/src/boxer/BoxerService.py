@@ -82,3 +82,26 @@ class BoxerService:
             return {"error": "You must be a boxer to get your gym name"}
 
         return self.boxer_repository.get_boxer_gym_info(extracted_jwt['uuid'])
+
+    def get_all_boxers(self, req_filters):
+        filters = {}
+        if 'country' in req_filters:
+            filters['country'] = req_filters['country']
+        if 'gender' in req_filters:
+            filters['gender'] = req_filters['gender']
+        if 'level' in req_filters:
+            filters['level'] = req_filters['level']
+        if 'stance' in req_filters:
+            filters['stance'] = req_filters['stance']
+        if 'minWeight' in req_filters and 'maxWeight' in req_filters:
+            filters['weight'] = {
+                '$gte': int(req_filters['minWeight']),
+                '$lte': int(req_filters['maxWeight'])
+            }
+        if 'minFights' in req_filters and 'maxFights' in req_filters:
+            filters['num_of_fights'] = {
+                '$gte': int(req_filters['minFights']),
+                '$lte': int(req_filters['maxFights'])
+            }
+
+        return self.boxer_repository.get_all_boxers(filters)
