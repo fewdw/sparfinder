@@ -42,7 +42,7 @@ const BoxerPage = () => {
                             <th>Weight</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>ç
                         <tr>
                             <td>{boxer.UUID}</td>
                             <td>{boxer.fname}</td>
