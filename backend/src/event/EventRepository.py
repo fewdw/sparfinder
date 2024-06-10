@@ -17,6 +17,11 @@ class EventRepository:
         self.auth = Auth()
         self.gyms = gyms
 
+    def get_gym_id_by_coach_id(self, coach_id):
+        query = {"coaches": coach_id}
+        gym = self.gyms.find_one(query, {"UUID": 1, "_id": 0})
+        return gym["UUID"]
+
     def get_gym_location(self, gym_id):
         gym = self.gyms.find_one({"UUID": gym_id}, {"address": 1, "_id": 0})
         return gym["address"]

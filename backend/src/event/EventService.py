@@ -29,13 +29,15 @@ class EventService:
         time = req.get("time", None)
         length_time = req.get("length_time", None)
         location = req.get("location", None)
-        gym_id = req.get("gym_id", None)
         max_participants = req.get("max_participants", None)
         is_private = req.get("is_private", None)
         use_gym_location = req.get("use_gym_location", None)
+        
+        gym_id = self.event_repository.get_gym_id_by_coach_id(coach_id)
 
         if use_gym_location:
             location = self.event_repository.get_gym_location(gym_id)
+
 
         new_event = Event(name, description, date, time, length_time, location, gym_id, max_participants, is_private)
 
