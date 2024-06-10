@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EventCard from './EventCard';
 import Cookies from 'js-cookie';
-import { VIEW_COACH_FUTURE_EVENTS } from '../../utils/apiConfig';
+import { VIEW_COACH_FUTURE_EVENTS, DELETE_EVENT } from '../../utils/apiConfig';
 import FutureEventCard from './FutureEventCard';
 
 const CoachFutureEvents = () => {
@@ -28,13 +28,13 @@ const CoachFutureEvents = () => {
 
   const handleDelete = async (uuid) => {
     const JWT = Cookies.get('jwt');
-    const response = await fetch(`http://127.0.0.1:5000/sparfinder/api/event/`, {
+    const response = await fetch(DELETE_EVENT, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ JWT, event_id: uuid })
     });
     if (response.ok) {
-      setEvents(events.filter(event => event.uuid !== uuid));  // Remove the event from the local state
+      setEvents(events.filter(event => event.uuid !== uuid));
       alert('Event deleted successfully');
     } else {
       console.error('Failed to delete the event');

@@ -11,12 +11,14 @@ db = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
 
 events = db.events.events
 gyms = db.gyms.gyms
+boxers = db.people.boxers
 
 class EventRepository:
     def __init__(self):
         self.events = events
         self.auth = Auth()
         self.gyms = gyms
+        self.boxers = boxers
 
     def get_gym_id_by_coach_id(self, coach_id):
         query = {"coaches": coach_id}
@@ -119,9 +121,36 @@ class EventRepository:
                 return {"error": "Cannot delete past or current events"}
 
             self.events.delete_one({"uuid": event_id})
-            # DELETE FROM LISTS........
+            
+            self.gyms.update_one(
+                {'events': event_id}, 
+                {'$pull': {'events': event_id}}
+            )
+
+            # REMOVE FROM BOXERS
+
             return {"success": "Event deleted successfully"}
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
 
 
+    def get_event_by_id_to_modify(self, event_id):
+        query = {
+            "uuid": event_id
+        }
+        fields = {
+            "_id": 0,
+            "uuid": 1,
+            "name": 1,
+            "description": 1,
+            "date": 1,
+            "time": 1,
+            "length_time": 1,
+            "location": 1,
+            "gym_id": 1,
+            "max_participants": 1,
+            "private": 1
+
+        }
+        event = self.events.find_one(query,fields)
+        return event

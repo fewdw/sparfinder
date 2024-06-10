@@ -23,3 +23,11 @@ def delete_event():
 @event_bp.route('/belongsto', methods=['POST'])
 def event_belongs_to_coach():
     return jsonify(event_service.event_belongs_to_coach(request.get_json()))
+
+@event_bp.route('/<event_id>', methods=['GET'])
+def get_event_by_id_to_modify(event_id):
+    return jsonify(event_service.get_event_by_id_to_modify(event_id))
+
+@event_bp.route('/', methods=['PUT'])
+def modify_event():
+    return jsonify(event_service.modify_event(request.get_json()))

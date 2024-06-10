@@ -24,4 +24,7 @@ export const GET_BOXER_BY_ID = `${BASE_URL}/sparfinder/api/boxer`;
 export const POST_NEW_EVENT = `${BASE_URL}/sparfinder/api/event/`
 export const VIEW_COACH_PAST_EVENTS = `${BASE_URL}/sparfinder/api/event/coach/past`;
 export const VIEW_COACH_FUTURE_EVENTS = `${BASE_URL}/sparfinder/api/event/coach/future`;
-
+export const DELETE_EVENT = `${BASE_URL}/sparfinder/api/event/`;
+export const EVENT_BELONGS_TO_COACH = `${BASE_URL}/sparfinder/api/event/belongsto`;
+export const GET_SINGLE_EVENT_INFO_TO_MODIFY = `${BASE_URL}/sparfinder/api/event/`;
+export const EDIT_EVENT = `${BASE_URL}/sparfinder/api/event`;

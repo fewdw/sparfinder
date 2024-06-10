@@ -11,7 +11,7 @@ const FutureEventCard = ({ event, onDelete }) => {
       <div className="flex justify-between items-center">
         <h2 className="font-medium">{event.name}</h2>
         <div>
-          <Link href={`/events/${event.uuid}/modify`}>
+          <Link href={`/events/${event.uuid}`}>
             <p className="mr-2 p-2 text-blue-500 hover:text-blue-700">Modify</p>
           </Link>
           <button onClick={handleDelete} className="p-2 text-red-500 hover:text-red-700">Delete</button>
