@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from dotenv import dotenv_values
 import pymongo
 import certifi
@@ -102,17 +102,26 @@ class EventRepository:
         gym = self.gyms.find_one({"UUID": event["gym_id"]}, {"coaches": 1, "_id": 0})
 
         if coach_id not in gym["coaches"]:
-            return True
+            return False
 
-        return False
+        return True
 
     def delete_event(self, event_id):
-        
         try:
+            event = self.events.find_one({"uuid": event_id}, {"date": 1})
+            if event is None:
+                return {"error": "Event not found"}
+
+            event_date = datetime.strptime(event['date'], '%Y-%m-%d').date()
+            today = date.today()
+
+            if event_date < today:
+                return {"error": "Cannot delete past or current events"}
+
             self.events.delete_one({"uuid": event_id})
-            # ALSO REMOVE FROM ALL LISTS
-            # ALSO CHECK IF EVENT IS IN THE FUTURE....
+            # DELETE FROM LISTS........
             return {"success": "Event deleted successfully"}
         except Exception as e:
-            return {"error": f"there was an error reaching the database: {e}"}
+            return {"error": f"There was an error reaching the database: {e}"}
+
 
