@@ -9,14 +9,22 @@ db_connection_string = env["DATABASE_CONNECTION_STRING"]
 db = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
 
 events = db.events.events
+gyms = db.gyms.gyms
 
 class EventRepository:
     def __init__(self):
         self.events = events
         self.auth = Auth()
+        self.gyms = gyms
 
     def create_event(self, event):
         try:
             events.insert_one(event)
+
+            self.gyms.update_one(
+            {'UUID': events.gym_id}, 
+            {'$push': {'events': event.uuid}}
+    )
+
         except Exception as e:
             return {"error":f"there was an error reaching the database: {e}"}
