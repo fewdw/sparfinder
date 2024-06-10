@@ -27,9 +27,9 @@ class EventService:
         description = req.get("description", None)
         date = req.get("date", None)
         time = req.get("time", None)
-        length_time = req.get("length_time", None)
+        length_time = int(req.get("length_time", None))
         location = req.get("location", None)
-        max_participants = req.get("max_participants", None)
+        max_participants = int(req.get("max_participants", None))
         is_private = req.get("is_private", None)
         use_gym_location = req.get("use_gym_location", None)
         
@@ -45,3 +45,23 @@ class EventService:
             return {"error": "Invalid event data"}
 
         return self.event_repository.create_event(new_event)
+
+    def get_coaches_past_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+        return self.event_repository.get_coaches_past_events(coach_id)
+    
+    def get_coaches_future_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}, 400
+
+        return self.event_repository.get_coaches_future_events(coach_id)

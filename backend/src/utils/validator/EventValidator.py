@@ -24,9 +24,18 @@ class EventValidator:
         time_pattern = re.compile(r'^([01]\d|2[0-3]):([0-5]\d)$')
         return bool(time_pattern.match(time_str))
 
+    # FIX THIS CODE
     def date_is_valid(self, date_str):
         date_pattern = re.compile(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$')
-        return bool(date_pattern.match(date_str))
+        if not date_pattern.match(date_str):
+            return False
+
+        try:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+        except ValueError:
+            return False
+
+        return date_obj > datetime.now()
 
     def length_time_is_valid(self, length_time):
         if not length_time:

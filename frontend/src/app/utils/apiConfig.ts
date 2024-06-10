@@ -21,4 +21,5 @@ export function getBoxersFromGymById(id: string) {
 export const GET_ALL_GYMS_FOR_PROFILE_PAGE = `${BASE_URL}/sparfinder/api/gym/`;
 export const GET_ALL_BOXERS_URL = `${BASE_URL}/sparfinder/api/boxer/boxers`;
 export const GET_BOXER_BY_ID = `${BASE_URL}/sparfinder/api/boxer`;
+export const POST_NEW_EVENT = `${BASE_URL}/sparfinder/api/event/`
 
