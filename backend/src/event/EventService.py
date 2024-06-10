@@ -65,3 +65,14 @@ class EventService:
             return {"error": str(e)}, 400
 
         return self.event_repository.get_coaches_future_events(coach_id)
+
+    def delete_event(self, req):
+        JWT = req.get("JWT", None)
+        event_id = req.get("event_id", None)
+        extracted_jwt = self.auth.extract_jwt(JWT)
+        coach_id = extracted_jwt['uuid']
+
+        if self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return self.event_repository.delete_event(event_id)
+
+        return {"error": "You do not have permission to delete this event"}

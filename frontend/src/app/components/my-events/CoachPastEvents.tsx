@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import EventCard from './EventCard';
 import Cookies from 'js-cookie';
 import { VIEW_COACH_PAST_EVENTS } from '../../utils/apiConfig';
+import EventCard from './EventCard';
 
 
 const CoachPastEvents = () => {

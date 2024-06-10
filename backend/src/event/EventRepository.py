@@ -92,3 +92,27 @@ class EventRepository:
         }
         events = self.events.find(query, fields)
         return list(events)
+
+    def event_belongs_to_coach(self, event_id, coach_id):
+        query = {
+            "uuid": event_id,
+        }
+        event = self.events.find_one(query, {"gym_id": 1, "_id": 0})
+
+        gym = self.gyms.find_one({"UUID": event["gym_id"]}, {"coaches": 1, "_id": 0})
+
+        if coach_id not in gym["coaches"]:
+            return True
+
+        return False
+
+    def delete_event(self, event_id):
+        
+        try:
+            self.events.delete_one({"uuid": event_id})
+            # ALSO REMOVE FROM ALL LISTS
+            # ALSO CHECK IF EVENT IS IN THE FUTURE....
+            return {"success": "Event deleted successfully"}
+        except Exception as e:
+            return {"error": f"there was an error reaching the database: {e}"}
+
