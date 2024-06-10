@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 from parameterized import parameterized
-from src.utils.validator.UserValidator import UserValidator  # Ensure this import matches your actual file structure
+from src.utils.validator.UserValidator import UserValidator
 
 class TestUserValidator(unittest.TestCase):
 

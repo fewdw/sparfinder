@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 class EventValidator:
     def __init__(self):
@@ -18,24 +19,14 @@ class EventValidator:
             return {"error": "Description must be between 5 and 500 characters long."}
         return True
 
-    def date_is_valid(self, date):
-        if len(date) != 10:
-            return {"error": "Date must be exactly 10 characters in YYYY-MM-DD format."}
-        
-        try:
-            input_date = datetime.strptime(date, '%Y-%m-%d').date()
-            if input_date <= datetime.now().date():
-                return {"error": "Date must be in the future."}
-            return True
-        except ValueError:
-            return {"error": "Date must be in YYYY-MM-DD format."}
 
-    def time_is_valid(self, time):
-        try:
-            datetime.strptime(time, '%H:%M')
-            return True
-        except ValueError:
-            return {"error": "Time must be in HH:MM format."}
+    def time_is_valid(self, time_str):
+        time_pattern = re.compile(r'^([01]\d|2[0-3]):([0-5]\d)$')
+        return bool(time_pattern.match(time_str))
+
+    def date_is_valid(self, date_str):
+        date_pattern = re.compile(r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$')
+        return bool(date_pattern.match(date_str))
 
     def length_time_is_valid(self, length_time):
         if not length_time:
