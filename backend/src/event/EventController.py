@@ -19,3 +19,7 @@ def get_coaches_future_events():
 @event_bp.route('/', methods=['DELETE'])
 def delete_event():
     return jsonify(event_service.delete_event(request.get_json()))
+
+@event_bp.route('/belongsto', methods=['POST'])
+def event_belongs_to_coach():
+    return jsonify(event_service.event_belongs_to_coach(request.get_json()))
