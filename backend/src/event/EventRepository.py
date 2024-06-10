@@ -17,14 +17,19 @@ class EventRepository:
         self.auth = Auth()
         self.gyms = gyms
 
+    def get_gym_location(self, gym_id):
+        gym = self.gyms.find_one({"UUID": gym_id}, {"address": 1, "_id": 0})
+        return gym["address"]
+
     def create_event(self, event):
         try:
-            events.insert_one(event)
+            events.insert_one(event.to_dict())
 
             self.gyms.update_one(
-            {'UUID': events.gym_id}, 
+            {'UUID': event.gym_id}, 
             {'$push': {'events': event.uuid}}
-    )
+        )
+            return {"success": "Event created successfully"}
 
         except Exception as e:
             return {"error":f"there was an error reaching the database: {e}"}
