@@ -174,3 +174,24 @@ class EventRepository:
             return {"success": "Event updated successfully"}
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
+
+
+    def get_all_events(self):
+        fields = {
+            "_id": 0,
+            "uuid": 1,
+            "name": 1,
+            "description": 1,
+            "date": 1,
+            "time": 1,
+            "length_time": 1,
+            "location": 1,
+            "gym_id": 1,
+            "max_participants": 1,
+            "participants": 1,
+            "waiting": 1,
+            "invited": 1,
+            "private": 1
+        }
+        events = self.events.find({}, fields)
+        return list(events)

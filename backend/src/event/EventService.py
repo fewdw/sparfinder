@@ -127,3 +127,6 @@ class EventService:
             return {"error": "You do not have permission to modify this event"}
 
         return self.event_repository.modify_event(date, description, length_time, location, max_participants, name, time, private, event_uuid)
+
+    def get_all_events(self):
+        return self.event_repository.get_all_events()

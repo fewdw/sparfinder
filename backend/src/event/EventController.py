@@ -31,3 +31,7 @@ def get_event_by_id_to_modify(event_id):
 @event_bp.route('/', methods=['PUT'])
 def modify_event():
     return jsonify(event_service.modify_event(request.get_json()))
+
+@event_bp.route('/events', methods=['GET'])
+def get_all_events():
+    return jsonify(event_service.get_all_events())
