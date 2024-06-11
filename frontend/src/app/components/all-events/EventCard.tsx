@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link'; // Import Link from next/link
+import Link from 'next/link';
 
 const EventCard = ({ event }) => {
   const progressPercentage = (event.participants_count / event.max_participants) * 100;

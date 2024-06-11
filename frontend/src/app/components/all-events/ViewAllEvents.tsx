@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import EventCard from './EventCard';
-import {GET_ALL_EVENTS_EVENTS_PAGE_FUTURE, GET_ALL_EVENTS_EVENTS_PAGE_PAST} from '../../utils/apiConfig'
+import { GET_ALL_EVENTS_EVENTS_PAGE_FUTURE, GET_ALL_EVENTS_EVENTS_PAGE_PAST } from '../../utils/apiConfig';
 
 const ViewAllEvents = () => {
   const [activeTab, setActiveTab] = useState('future');
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    minDate: '',
+    maxDate: '',
+    minTime: '',
+    maxTime: '',
+    isPrivate: false,
+    hasPlace: false
+  });
 
   const fetchEvents = async () => {
-    const url = activeTab === 'future'
-      ? GET_ALL_EVENTS_EVENTS_PAGE_FUTURE
-      : GET_ALL_EVENTS_EVENTS_PAGE_PAST;
+    let url = activeTab === 'future' ? GET_ALL_EVENTS_EVENTS_PAGE_FUTURE : GET_ALL_EVENTS_EVENTS_PAGE_PAST;
+    const queryParams = new URLSearchParams();
+    if (filters.minDate) queryParams.append('min_date', filters.minDate);
+    if (filters.maxDate) queryParams.append('max_date', filters.maxDate);
+    if (filters.minTime) queryParams.append('min_time', filters.minTime);
+    if (filters.maxTime) queryParams.append('max_time', filters.maxTime);
+    if (filters.isPrivate) queryParams.append('is_private', filters.isPrivate);
+    if (filters.hasPlace) queryParams.append('has_place', filters.hasPlace);
+
+    url += `?${queryParams.toString()}`;
     setLoading(true);
     try {
       const response = await fetch(url);
@@ -25,22 +40,67 @@ const ViewAllEvents = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [activeTab]);
+  }, [activeTab, filters]);
+
+  const handleFilterChange = (field, value) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+  };
+
+  const resetFilters = () => {
+    setFilters({
+      minDate: '',
+      maxDate: '',
+      minTime: '',
+      maxTime: '',
+      isPrivate: false,
+      hasPlace: false
+    });
+  };
 
   return (
     <div className='mt-4'>
-      <div className="sm:hidden">
-        <select id="eventTab" className="w-full rounded-md border-gray-200 p-2" value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
-          <option value="future">Future Events</option>
-          <option value="past">Past Events</option>
-        </select>
-      </div>
+      <div className="border-b border-gray-200 pb-4">
+        <div className="sm:hidden">
+          <select id="eventTab" className="w-full rounded-md border-gray-200 p-2" value={activeTab} onChange={(e) => setActiveTab(e.target.value)}>
+            <option value="future">Future Events</option>
+            <option value="past">Past Events</option>
+          </select>
+        </div>
 
-      <div className="hidden sm:block">
-        <nav className="border-b border-gray-200 -mb-px flex justify-center gap-6">
-          <button onClick={() => setActiveTab('future')} className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${activeTab === 'future' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>Future Events</button>
-          <button onClick={() => setActiveTab('past')} className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${activeTab === 'past' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>Past Events</button>
-        </nav>
+        <div className="hidden sm:block">
+          <nav className="flex justify-center gap-6">
+            <button onClick={() => setActiveTab('future')} className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${activeTab === 'future' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>Future Events</button>
+            <button onClick={() => setActiveTab('past')} className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${activeTab === 'past' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>Past Events</button>
+          </nav>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between gap-4 p-4">
+        <label className="block mb-2">
+        Minimum Date:
+        <input type="date" value={filters.minDate} onChange={(e) => handleFilterChange('minDate', e.target.value)} className="p-2 rounded-md border-gray-200" />
+    </label>
+    <label className="block mb-2">
+        Maximum Date:
+        <input type="date" value={filters.maxDate} onChange={(e) => handleFilterChange('maxDate', e.target.value)} className="p-2 rounded-md border-gray-200" />
+    </label>
+    <label className="block mb-2">
+        Minimum Time:
+        <input type="time" value={filters.minTime} onChange={(e) => handleFilterChange('minTime', e.target.value)} className="p-2 rounded-md border-gray-200" />
+    </label>
+    <label className="block mb-2">
+        Maximum Time:
+        <input type="time" value={filters.maxTime} onChange={(e) => handleFilterChange('maxTime', e.target.value)} className="p-2 rounded-md border-gray-200" />
+    </label>
+    <label className="flex items-center gap-2 mb-2">
+        <input type="checkbox" checked={filters.isPrivate} onChange={(e) => handleFilterChange('isPrivate', e.target.checked)} />
+        Private Event
+    </label>
+    <label className="flex items-center gap-2 mb-2">
+        <input type="checkbox" checked={filters.hasPlace} onChange={(e) => handleFilterChange('hasPlace', e.target.checked)} />
+        Has Place
+    </label>
+    <button onClick={resetFilters} className="bg-gray-300 p-2 rounded-md">Clear Filters</button>
+        </div>
       </div>
 
       {loading ? (
