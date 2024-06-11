@@ -8,9 +8,9 @@ import MenuBar from '@/app/components/MenuBar';
 import ModifyEventForm from '@/app/components/my-events/ModifyEventForm';
 import CoachViewEventInvitedPeopleList from '@/app/components/CoachViewEventInvitedPeopleList';
 import CoachViewEventWaitingPeopleList from '@/app/components/CoachViewEventWaitingPeopleList';
-import CoachViewEventParticipantPeopleList from '@/app/components/CoachViewEventParticipantPeopleList';
-import CoachViewEventOverviewList from '@/app/components/CoachViewEventOverviewList';
 import Link from 'next/link';
+import ViewEventOverviewList from '@/app/components/ViewEventOverviewList';
+import ViewEventParticipantPeopleList from '@/app/components/ViewEventParticipantPeopleList';
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState('overview'); // Default to 'overview' or another appropriate default
@@ -60,9 +60,9 @@ const Page = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <CoachViewEventOverviewList eventId={params.event_id} />;
+        return <ViewEventOverviewList eventId={params.event_id} />;
       case 'participants':
-        return <CoachViewEventParticipantPeopleList eventId={params.event_id} />;
+        return <ViewEventParticipantPeopleList eventId={params.event_id} />;
       default:
         if (activeTab === 'waiting' && isAuthorized) {
           return <CoachViewEventWaitingPeopleList eventId={params.event_id} />;

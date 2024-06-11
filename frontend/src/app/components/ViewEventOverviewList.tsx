@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GET_SINGLE_EVENT_INFO_TO_MODIFY } from "../utils/apiConfig";
 
-const CoachViewEventOverviewList = ({ eventId }) => {
+const ViewEventOverviewList = ({ eventId }) => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -69,4 +69,4 @@ const CoachViewEventOverviewList = ({ eventId }) => {
   );
 };
 
-export default CoachViewEventOverviewList;
+export default ViewEventOverviewList;
