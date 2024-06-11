@@ -25,7 +25,12 @@ const Page = () => {
     const verifyEventOwnership = async () => {
       if (!params.event_id) return;
       const JWT = Cookies.get('jwt');
-
+  
+      if (!JWT) {
+        router.push('/');
+        return;
+      }
+  
       try {
         const response = await fetch(EVENT_BELONGS_TO_COACH, {
           method: 'POST',
@@ -40,7 +45,7 @@ const Page = () => {
       }
       setLoading(false);
     };
-
+  
     verifyEventOwnership();
   }, [params.event_id, router]);
 

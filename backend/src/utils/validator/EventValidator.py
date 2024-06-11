@@ -68,6 +68,22 @@ class EventValidator:
             return {"error": "Private must be a boolean value (True or False)."}
         return True
 
+    def update_event_is_valid(self, date, description, length_time, location, max_participants, name, time, private):
+        validators = [
+            self.date_is_valid(date),
+            self.description_is_valid(description),
+            self.length_time_is_valid(length_time),
+            self.location_is_valid(location),
+            self.max_participants_is_valid(max_participants),
+            self.name_is_valid(name),
+            self.time_is_valid(time),
+            self.private_is_valid(private)
+        ]
+        if all(result == True for result in validators):
+            return True
+        else:
+            return [result for result in validators if result != True]
+
     def event_is_valid(self, event):
         validators = [
             self.name_is_valid(event.name),

@@ -103,14 +103,27 @@ class EventService:
         return {"error":"we ran into a problem adding your event"}
 
     def modify_event(self, req):
-        
-        """
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": f"we ran into an issue with your JWT: {str(e)}"}
 
-        get the token and extract it
-        get all the request data
-        check if the event belongs to the coach
-        modify the event
+        date = req.get("date", None)
+        description = req.get("description", None)
+        length_time = int(req.get("length_time", None))
+        location = req.get("location", None)
+        max_participants = int(req.get("max_participants", None))
+        name = req.get("name", None)
+        time = req.get("time", None)
+        private = req.get("private", None)
+        event_uuid = req.get("event_uuid", None)
 
-        """
-        
-        pass
+        if not self.event_validator.update_event_is_valid(date, description, length_time, location, max_participants, name, time, private):
+            return {"error": "Invalid event data"}
+
+        if not self.event_repository.event_belongs_to_coach(event_uuid, coach_id):
+            return {"error": "You do not have permission to modify this event"}
+
+        return self.event_repository.modify_event(date, description, length_time, location, max_participants, name, time, private, event_uuid)

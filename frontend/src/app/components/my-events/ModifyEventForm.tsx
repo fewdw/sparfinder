@@ -9,9 +9,12 @@ import {
   validateLocation,
   validateMaxParticipants
 } from '../../utils/EventValidator';
-import { EDIT_EVENT } from '../../utils/apiConfig';
+import { EDIT_EVENT, GET_EVENT_BY_ID } from '../../utils/apiConfig';
+import { useRouter } from "next/navigation"; // Correct hook for App Router
+
 
 const ModifyEventForm = ({ eventId }) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -31,7 +34,7 @@ const ModifyEventForm = ({ eventId }) => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/sparfinder/api/event/${eventId}`);
+        const response = await fetch(`${GET_EVENT_BY_ID}/${eventId}`);
         const data = await response.json();
         if (response.ok) {
           setFormData({

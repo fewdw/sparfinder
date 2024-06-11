@@ -154,3 +154,23 @@ class EventRepository:
         }
         event = self.events.find_one(query,fields)
         return event
+
+
+    def modify_event(self, date, description, length_time, location, max_participants, name, time, private, event_uuid):
+        try:
+            self.events.update_one(
+                {"uuid": event_uuid},
+                {"$set": {
+                    "date": date,
+                    "description": description,
+                    "length_time": length_time,
+                    "location": location,
+                    "max_participants": max_participants,
+                    "name": name,
+                    "time": time,
+                    "private": private
+                }}
+            )
+            return {"success": "Event updated successfully"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
