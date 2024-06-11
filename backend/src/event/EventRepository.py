@@ -229,3 +229,41 @@ class EventRepository:
             query["$expr"] = {"$lt": [{"$size": "$participants"}, "$max_participants"]}
 
 
+    def boxer_participate_to_event(self, event_id, boxer_id):
+        # Find the event to check its status
+        event = self.events.find_one({"uuid": event_id})
+        if not event:
+            return {"result": "Event not found"}
+
+        # Check if the boxer is already in any of the lists
+        if boxer_id in event.get('participants', []) + event.get('waiting', []) + event.get('invited', []):
+            list_name = "participants" if boxer_id in event.get('participants', []) else ("waiting" if boxer_id in event.get('waiting', []) else "invited")
+            return {"result": f"Boxer already in {list_name} list"}
+
+        # Check if the event is full or private
+        is_full = len(event.get('participants', [])) >= event.get('max_participants', float('inf'))
+        is_private = event.get('private', False)
+
+        # Decide where to add the boxer based on the event's status
+        if is_full or is_private:
+            # Add boxer to the waiting list if the event is full or private
+            self.events.find_one_and_update(
+                {"uuid": event_id},
+                {"$push": {"waiting": boxer_id}},
+            )
+            return {"result": "boxer added to waiting list"}
+        else:
+            # Add boxer to the participants list if the event is not full and is public
+            update_result = self.events.find_one_and_update(
+                {"uuid": event_id},
+                {"$push": {"participants": boxer_id}},
+            )
+            # Update boxer's participated events only if added to the participants
+            if update_result:
+                self.boxers.find_one_and_update(
+                    {"UUID": boxer_id},
+                    {"$push": {"participated_events": event_id}}
+                )
+            return {"result": "boxer added to participants"}
+
+        return {"result": "An error occurred while adding the boxer to the event"}

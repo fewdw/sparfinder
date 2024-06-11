@@ -135,3 +135,21 @@ class EventService:
 
     def get_all_past_events(self, req_filters):
         return self.event_repository.get_all_past_events(req_filters)
+
+    def boxer_participate_to_event(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            user_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"return": str(e)}
+
+        event_id = req.get("event_id", None)
+
+        if event_id is None:
+            return {"result": "You must provide an event_id"}
+
+        if extracted_jwt['account_type'] != "boxer":
+            return {"result": "You must be a boxer to participate in an event"}
+
+        return self.event_repository.boxer_participate_to_event(event_id, user_id)

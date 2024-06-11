@@ -41,3 +41,7 @@ def get_all_future_events():
 def get_all_past_events():
     req_filters = request.args.to_dict()
     return jsonify(event_service.get_all_past_events(req_filters))
+
+@event_bp.route('/participate', methods=['POST'])
+def boxer_participate_to_event():
+    return jsonify(event_service.boxer_participate_to_event(request.get_json()))
