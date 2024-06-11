@@ -153,3 +153,7 @@ class EventService:
             return {"result": "You must be a boxer to participate in an event"}
 
         return self.event_repository.boxer_participate_to_event(event_id, user_id)
+
+
+    def get_event_participants_by_id(self, event_id):
+        return self.event_repository.get_event_participants_by_id(event_id)

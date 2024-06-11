@@ -45,3 +45,7 @@ def get_all_past_events():
 @event_bp.route('/participate', methods=['POST'])
 def boxer_participate_to_event():
     return jsonify(event_service.boxer_participate_to_event(request.get_json()))
+
+@event_bp.route('/participants/<event_id>', methods=['GET'])
+def get_event_participants_by_id(event_id):
+    return jsonify(event_service.get_event_participants_by_id(event_id))

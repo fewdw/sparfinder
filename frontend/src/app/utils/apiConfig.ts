@@ -31,3 +31,4 @@ export const EDIT_EVENT = `${BASE_URL}/sparfinder/api/event/`;
 export const GET_EVENT_BY_ID = `${BASE_URL}/sparfinder/api/event`;
 export const GET_ALL_EVENTS_EVENTS_PAGE_FUTURE = `${BASE_URL}/sparfinder/api/event/events/future`;
 export const GET_ALL_EVENTS_EVENTS_PAGE_PAST = `${BASE_URL}/sparfinder/api/event/events/past`;
+export const BOXER_PARTICIPATE_TO_EVENT = `${BASE_URL}/sparfinder/api/event/participate`;

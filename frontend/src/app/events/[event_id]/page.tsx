@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
-import { EVENT_BELONGS_TO_COACH } from "../../utils/apiConfig";
+import { EVENT_BELONGS_TO_COACH, BOXER_PARTICIPATE_TO_EVENT } from "../../utils/apiConfig";
 import { useParams } from 'next/navigation';
 import MenuBar from '@/app/components/MenuBar';
 import ModifyEventForm from '@/app/components/my-events/ModifyEventForm';
@@ -13,25 +13,28 @@ import ViewEventOverviewList from '@/app/components/ViewEventOverviewList';
 import ViewEventParticipantPeopleList from '@/app/components/ViewEventParticipantPeopleList';
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState('overview'); // Default to 'overview' or another appropriate default
-
+  const [activeTab, setActiveTab] = useState('overview');
   const router = useRouter();
   const params = useParams();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [joinResult, setJoinResult] = useState('');
+  const [accountType, setAccountType] = useState('');
 
   useEffect(() => {
     const verifyEventOwnership = async () => {
       if (!params.event_id) return;
       const JWT = Cookies.get('jwt');
-  
+
       if (!JWT) {
         router.push('/');
         return;
       }
-  
+
       try {
+        const payload = JSON.parse(atob(JWT.split('.')[1]));
+        setAccountType(payload.account_type);
         const response = await fetch(EVENT_BELONGS_TO_COACH, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -45,9 +48,26 @@ const Page = () => {
       }
       setLoading(false);
     };
-  
+
     verifyEventOwnership();
   }, [params.event_id, router]);
+
+  const handleJoinEvent = async () => {
+    const JWT = Cookies.get('jwt');
+    const url = BOXER_PARTICIPATE_TO_EVENT;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ JWT, event_id: params.event_id })
+      });
+      const data = await response.json();
+      setJoinResult(data.result);
+    } catch (error) {
+      console.error('Failed to join event:', error);
+      setJoinResult('Failed to join event.');
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -60,7 +80,19 @@ const Page = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <ViewEventOverviewList eventId={params.event_id} />;
+        return (
+          <>
+            <ViewEventOverviewList eventId={params.event_id} />
+            {accountType === 'boxer' && (
+              <div className="mt-4 flex justify-center">
+                <button onClick={handleJoinEvent} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Join Event
+                </button>
+                {joinResult && <p className="mt-2 ml-4 text-sm text-red-600">{joinResult}</p>}
+              </div>
+            )}
+          </>
+        );
       case 'participants':
         return <ViewEventParticipantPeopleList eventId={params.event_id} />;
       default:
@@ -79,7 +111,7 @@ const Page = () => {
 
   const tabs = ['overview', 'participants'];
   if (isAuthorized) {
-    tabs.push('waiting', 'invited', 'modify');  // Extend tabs if authorized
+    tabs.push('waiting', 'invited', 'modify');
   }
 
   return (

@@ -238,7 +238,7 @@ class EventRepository:
         # Check if the boxer is already in any of the lists
         if boxer_id in event.get('participants', []) + event.get('waiting', []) + event.get('invited', []):
             list_name = "participants" if boxer_id in event.get('participants', []) else ("waiting" if boxer_id in event.get('waiting', []) else "invited")
-            return {"result": f"Boxer already in {list_name} list"}
+            return {"result": f"already in {list_name} list"}
 
         # Check if the event is full or private
         is_full = len(event.get('participants', [])) >= event.get('max_participants', float('inf'))
@@ -251,7 +251,7 @@ class EventRepository:
                 {"uuid": event_id},
                 {"$push": {"waiting": boxer_id}},
             )
-            return {"result": "boxer added to waiting list"}
+            return {"result": "added to waiting list"}
         else:
             # Add boxer to the participants list if the event is not full and is public
             update_result = self.events.find_one_and_update(
@@ -264,6 +264,20 @@ class EventRepository:
                     {"UUID": boxer_id},
                     {"$push": {"participated_events": event_id}}
                 )
-            return {"result": "boxer added to participants"}
+            return {"result": "added to participants"}
 
         return {"result": "An error occurred while adding the boxer to the event"}
+
+
+    def get_event_participants_by_id(self, event_id):
+        query = {
+            "uuid": event_id
+        }
+        fields = {
+            "_id": 0,
+            "participants": 1
+        }
+        event = self.events.find_one(query, fields)
+        
+        boxers = self.boxers.find({"UUID": {"$in": event["participants"]}}, {"_id": 0, "waiting_list":0, "invite_list":0,"event_rated":0,"boxers_rated":0,"rating":0,"profile_pic":0,"participated_events":0})
+        return list(boxers)
