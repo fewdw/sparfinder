@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {GET_LIST_OF_PARTICIPANTS} from '../utils/apiConfig';
 
 const ViewEventParticipantPeopleListNotEventView = ({ eventId }) => {
   const [participants, setParticipants] = useState([]);
@@ -9,7 +10,7 @@ const ViewEventParticipantPeopleListNotEventView = ({ eventId }) => {
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/sparfinder/api/event/participants/${eventId}`);
+        const response = await fetch(`${GET_LIST_OF_PARTICIPANTS}/${eventId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
