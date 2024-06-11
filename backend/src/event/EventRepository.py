@@ -176,7 +176,11 @@ class EventRepository:
             return {"error": f"There was an error reaching the database: {e}"}
 
 
-    def get_all_events(self):
+
+"""
+
+        FIELDS TO BE RETURNED IN THE QUERIES WHEN GET ALL EVENTS
+
         fields = {
             "_id": 0,
             "uuid": 1,
@@ -193,5 +197,4 @@ class EventRepository:
             "invited": 1,
             "private": 1
         }
-        events = self.events.find({}, fields)
-        return list(events)
+"""
