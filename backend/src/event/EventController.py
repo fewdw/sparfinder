@@ -50,6 +50,6 @@ def boxer_participate_to_event():
 def get_event_participants_by_id(event_id):
     return jsonify(event_service.get_event_participants_by_id(event_id))
 
-@event_bp.route('/participants/<event_id>/<boxer_id>', methods=['GET'])
-def remove_boxer_from_participants_by_id(event_id, boxer_id):
-    return jsonify(event_service.remove_boxer_from_participants_by_id(event_id, boxer_id))
+@event_bp.route('/participants', methods=['POST'])
+def remove_boxer_from_participants_by_id():
+    return jsonify(event_service.remove_boxer_from_participants_by_id(request.get_json()))

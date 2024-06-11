@@ -159,5 +159,17 @@ class EventService:
         return self.event_repository.get_event_participants_by_id(event_id)
 
 
-    def remove_boxer_from_participants_by_id(self, event_id, boxer_id):
+    def remove_boxer_from_participants_by_id(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+            boxer_id = req.get("boxer_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to remove a boxer from this event"}
+
         return self.event_repository.remove_boxer_from_participants_by_id(event_id, boxer_id)
