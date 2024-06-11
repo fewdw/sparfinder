@@ -157,3 +157,7 @@ class EventService:
 
     def get_event_participants_by_id(self, event_id):
         return self.event_repository.get_event_participants_by_id(event_id)
+
+
+    def remove_boxer_from_participants_by_id(self, event_id, boxer_id):
+        return self.event_repository.remove_boxer_from_participants_by_id(event_id, boxer_id)

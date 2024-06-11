@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation"; // Correct hook for App Router
 import { EVENT_BELONGS_TO_COACH } from "../utils/apiConfig";
+import ViewEventParticipantPeopleListEvenrOwnerView from './ViewEventParticipantPeopleListEvenrOwnerView';
+import ViewEventParticipantPeopleListNotEventView from './ViewEventParticipantPeopleListNotEventView';
 
 const ViewEventParticipantPeopleList = ({ eventId }) => {
   const [userStatus, setUserStatus] = useState('loading'); // 'loading', 'notYourEvent', 'yourEvent', 'redirect'
@@ -48,8 +50,8 @@ const ViewEventParticipantPeopleList = ({ eventId }) => {
 
   return (
     <div>
-      {userStatus === 'yourEvent' && <p>{eventId}, This is your event!</p>}
-      {userStatus === 'notYourEvent' && <p>{eventId}, Not your event.</p>}
+      {userStatus === 'yourEvent' && <p><ViewEventParticipantPeopleListEvenrOwnerView eventId={eventId} /> </p>}
+      {userStatus === 'notYourEvent' && <p><ViewEventParticipantPeopleListNotEventView eventId={eventId} /> </p>}
     </div>
   );
 }

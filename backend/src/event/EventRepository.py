@@ -281,3 +281,17 @@ class EventRepository:
         
         boxers = self.boxers.find({"UUID": {"$in": event["participants"]}}, {"_id": 0, "waiting_list":0, "invite_list":0,"event_rated":0,"boxers_rated":0,"rating":0,"profile_pic":0,"participated_events":0})
         return list(boxers)
+
+    def remove_boxer_from_participants_by_id(self, event_id, boxer_id):
+        try:
+            self.events.update_many(
+                {},
+                {"$pull": {"participants": boxer_id}}
+            )
+            self.boxers.update_many(
+                {},
+                {"$pull": {"participated_events": event_id}}
+            )
+            return {"success": "Boxer removed from all events"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
