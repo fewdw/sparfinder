@@ -12,7 +12,7 @@ const FutureEventCard = ({ event, onDelete }) => {
         <h2 className="font-medium">{event.name}</h2>
         <div>
           <Link href={`/events/${event.uuid}`}>
-            <p className="mr-2 p-2 text-blue-500 hover:text-blue-700">Modify</p>
+            <p className="mr-2 p-2 text-blue-500 hover:text-blue-700">View Events Page</p>
           </Link>
           <button onClick={handleDelete} className="p-2 text-red-500 hover:text-red-700">Delete</button>
         </div>

@@ -29,3 +29,5 @@ export const EVENT_BELONGS_TO_COACH = `${BASE_URL}/sparfinder/api/event/belongst
 export const GET_SINGLE_EVENT_INFO_TO_MODIFY = `${BASE_URL}/sparfinder/api/event/`;
 export const EDIT_EVENT = `${BASE_URL}/sparfinder/api/event/`;
 export const GET_EVENT_BY_ID = `${BASE_URL}/sparfinder/api/event`;
+export const GET_ALL_EVENTS_EVENTS_PAGE_FUTURE = `${BASE_URL}/sparfinder/api/event/events/future`;
+export const GET_ALL_EVENTS_EVENTS_PAGE_PAST = `${BASE_URL}/sparfinder/api/event/events/past`;

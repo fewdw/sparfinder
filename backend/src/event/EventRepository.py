@@ -168,7 +168,7 @@ class EventRepository:
                     "max_participants": max_participants,
                     "name": name,
                     "time": time,
-                    "private": private
+                    "private": private,
                 }}
             )
             return {"success": "Event updated successfully"}
@@ -176,11 +176,7 @@ class EventRepository:
             return {"error": f"There was an error reaching the database: {e}"}
 
 
-
-"""
-
-        FIELDS TO BE RETURNED IN THE QUERIES WHEN GET ALL EVENTS
-
+    def get_fields_for_get_all_events(self):
         fields = {
             "_id": 0,
             "uuid": 1,
@@ -195,6 +191,41 @@ class EventRepository:
             "participants": 1,
             "waiting": 1,
             "invited": 1,
-            "private": 1
+            "private": 1,
+            "participants_count": {"$size": "$participants"}
         }
-"""
+        return fields
+
+    def get_all_future_events(self, filters):
+        today_str = date.today().strftime('%Y-%m-%d')
+        query = {"date": {"$gte": today_str}}
+        self.apply_filters(query, filters, future=True)
+        fields = self.get_fields_for_get_all_events()
+        events = self.events.find(query, fields)
+        return list(events)
+
+    def get_all_past_events(self, filters):
+        today_str = date.today().strftime('%Y-%m-%d')
+        query = {"date": {"$lt": today_str}}
+        self.apply_filters(query, filters, future=False)
+        fields = self.get_fields_for_get_all_events()
+        events = self.events.find(query, fields)
+        return list(events)
+
+    def apply_filters(self, query, filters, future=False):
+        if 'min_date' in filters:
+            query["date"].update({"$gte": filters['min_date']})
+        if 'max_date' in filters:
+            query["date"].update({"$lte": filters['max_date']})
+        if 'min_time' in filters:
+            query.setdefault("time", {})["$gte"] = filters['min_time']
+        if 'max_time' in filters:
+            query.setdefault("time", {})["$lte"] = filters['max_time']
+        if 'is_private' in filters:
+            query["private"] = filters['is_private'].lower() in ['true', '1', 'yes']
+
+        if 'has_place' in filters and filters['has_place'].lower() in ['true', '1', 'yes']:
+            # Ensure the number of participants is less than max_participants
+            query["$expr"] = {"$lt": [{"$size": "$participants"}, "$max_participants"]}
+
+

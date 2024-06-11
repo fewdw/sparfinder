@@ -33,9 +33,11 @@ def modify_event():
     return jsonify(event_service.modify_event(request.get_json()))
 
 @event_bp.route('/events/future', methods=['GET'])
-def get_all_events():
-    return jsonify(event_service.get_all_future_events())
+def get_all_future_events():
+    req_filters = request.args.to_dict()
+    return jsonify(event_service.get_all_future_events(req_filters))
 
 @event_bp.route('/events/past', methods=['GET'])
-def get_all_events():
-    return jsonify(event_service.get_all_past_events())
+def get_all_past_events():
+    req_filters = request.args.to_dict()
+    return jsonify(event_service.get_all_past_events(req_filters))

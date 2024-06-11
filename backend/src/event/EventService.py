@@ -2,6 +2,7 @@ from src.utils.auth.Auth import Auth
 from src.event.EventRepository import EventRepository
 from src.utils.validator.EventValidator import EventValidator
 from src.event.Event import Event
+from datetime import date, datetime
 
 class EventService:
 
@@ -128,4 +129,9 @@ class EventService:
 
         return self.event_repository.modify_event(date, description, length_time, location, max_participants, name, time, private, event_uuid)
 
-        
+
+    def get_all_future_events(self, req_filters):
+        return self.event_repository.get_all_future_events(req_filters)
+
+    def get_all_past_events(self, req_filters):
+        return self.event_repository.get_all_past_events(req_filters)
