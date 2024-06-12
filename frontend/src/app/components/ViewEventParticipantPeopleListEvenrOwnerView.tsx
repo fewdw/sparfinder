@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import { VIEW_PARTICIPANTS_BY_EVENT_ID, DELETE_PARTICIPANTS_BY_EVENT_ID } from '../utils/apiConfig';
 
 const ViewEventParticipantPeopleListEventOwnerView = ({ eventId }) => {
   const [participants, setParticipants] = useState([]);
@@ -10,7 +11,7 @@ const ViewEventParticipantPeopleListEventOwnerView = ({ eventId }) => {
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/sparfinder/api/event/participants/${eventId}`);
+        const response = await fetch(`${VIEW_PARTICIPANTS_BY_EVENT_ID}/${eventId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -30,7 +31,7 @@ const ViewEventParticipantPeopleListEventOwnerView = ({ eventId }) => {
   const handleDelete = async (boxerId) => {
     const JWT = Cookies.get('jwt');
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/participants', {
+      const response = await fetch(DELETE_PARTICIPANTS_BY_EVENT_ID, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
