@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import MenuBar from './MenuBar';
+import {VIEW_BOXER_INVITED_EVENTS, ACCEPT_INVITATION, LEAVE_INVITED_EVENT} from '../utils/apiConfig';
 
 const BoxerInviteList = () => {
   const [invitedEvents, setInvitedEvents] = useState([]);
@@ -20,7 +21,7 @@ const BoxerInviteList = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/boxer/view/invited', {
+      const response = await fetch(VIEW_BOXER_INVITED_EVENTS, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ JWT })
@@ -38,7 +39,7 @@ const BoxerInviteList = () => {
   const handleLeaveEvent = async (eventUuid) => {
     const JWT = Cookies.get('jwt');
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/boxer/leave/invited', {
+      const response = await fetch(LEAVE_INVITED_EVENT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ JWT, event_id: eventUuid })
@@ -57,7 +58,7 @@ const BoxerInviteList = () => {
   const handleAcceptEvent = async (eventUuid) => {
     const JWT = Cookies.get('jwt');
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/boxer/accept/invitation', {
+      const response = await fetch(ACCEPT_INVITATION, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ JWT, event_id: eventUuid })

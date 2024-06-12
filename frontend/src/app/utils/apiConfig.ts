@@ -46,3 +46,6 @@ export const BOXER_WAITING_LIST_VIEW_EVENTS = `${BASE_URL}/sparfinder/api/event/
 export const BOXER_LEAVE_WAITING_LIST_EVENT = `${BASE_URL}/sparfinder/api/event/boxer/leave/waiting`;
 export const VIEW_PARTICIPANTS_BY_EVENT_ID = `${BASE_URL}/sparfinder/api/event/participants`;
 export const DELETE_PARTICIPANTS_BY_EVENT_ID = `${BASE_URL}/sparfinder/api/event/participants`;
+export const VIEW_BOXER_INVITED_EVENTS = `${BASE_URL}/sparfinder/api/event/boxer/view/invited`;
+export const LEAVE_INVITED_EVENT = `${BASE_URL}/sparfinder/api/event/boxer/leave/invited`;
+export const ACCEPT_INVITATION = `${BASE_URL}/sparfinder/api/event/boxer/accept/invitation`;
