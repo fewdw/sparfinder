@@ -27,3 +27,7 @@ deactivate
 RUN FRONTEND
 npm install
 npm run dev
+
+# Description
+
+The project guidelines provided were somewhat ambiguous. According to the instructions, I was expected to commit changes sequentially from stages B to E. However, as I am working within a Scrum/Agile framework, the project involves full-stack development with incremental testing. Consequently, I did not commit and push changes for each individual stage because not all features from stage B were completed prior to proceeding with stages C and D. The features were developed incrementally, and testing was conducted continuously rather than solely at the conclusion of the development process.
