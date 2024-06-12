@@ -40,3 +40,7 @@ export const VIEW_COACH_EVENTS_NAME_AND_IDs = `${BASE_URL}/sparfinder/api/event/
 export const INVITE_BOXER_TO_EVENT = `${BASE_URL}/sparfinder/api/event/invite`;
 export const VIEW_EVENT_INVITE_LIST = `${BASE_URL}/sparfinder/api/event/invite/list`;
 export const REVOKE_INVITE = `${BASE_URL}/sparfinder/api/event/invite/revoke`;
+export const GET_BOXER_PARTICIPATING_EVENTS = `${BASE_URL}/sparfinder/api/event/boxer/view/participating`;
+export const BOXER_LEAVE_PARTICIPATING_EVENTS = `${BASE_URL}/sparfinder/api/event/boxer/leave/participating`;
+export const BOXER_WAITING_LIST_VIEW_EVENTS = `${BASE_URL}/sparfinder/api/event/boxer/view/waiting`;
+export const BOXER_LEAVE_WAITING_LIST_EVENT = `${BASE_URL}/sparfinder/api/event/boxer/leave/waiting`;

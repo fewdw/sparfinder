@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import MenuBar from '../MenuBar';
 import Link from 'next/link';
+import { GET_BOXER_PARTICIPATING_EVENTS, BOXER_LEAVE_PARTICIPATING_EVENTS } from '../../utils/apiConfig';
 
 const BoxerView = () => {
     const [events, setEvents] = useState([]);
@@ -21,7 +22,7 @@ const BoxerView = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/boxer/view/participating', {
+            const response = await fetch(GET_BOXER_PARTICIPATING_EVENTS, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ JWT })
@@ -39,7 +40,7 @@ const BoxerView = () => {
     const handleLeaveEvent = async (eventUuid) => {
         const JWT = Cookies.get('jwt');
         try {
-            const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/boxer/leave/participating', {
+            const response = await fetch(BOXER_LEAVE_PARTICIPATING_EVENTS, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ JWT, event_id: eventUuid })
