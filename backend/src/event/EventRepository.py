@@ -328,6 +328,13 @@ class EventRepository:
 
     def approve_people_from_waitlist(self, event_id, boxer_id):
         try:
+
+            current_event = self.events.find_one({"uuid": event_id})
+            is_full = len(current_event.get('participants', [])) >= current_event.get('max_participants', float('inf'))
+
+            if is_full:
+                return {"error": "Event is already full"}
+
             self.events.update_one(
                 {'uuid': event_id},
                 {"$pull": {"waiting": boxer_id}}

@@ -33,3 +33,4 @@ export const GET_ALL_EVENTS_EVENTS_PAGE_FUTURE = `${BASE_URL}/sparfinder/api/eve
 export const GET_ALL_EVENTS_EVENTS_PAGE_PAST = `${BASE_URL}/sparfinder/api/event/events/past`;
 export const BOXER_PARTICIPATE_TO_EVENT = `${BASE_URL}/sparfinder/api/event/participate`;
 export const GET_LIST_OF_PARTICIPANTS = `${BASE_URL}/sparfinder/api/event/participants`;
+export const GET_EVENT_WAITING_LIST = `${BASE_URL}/sparfinder/api/event/waiting`;
