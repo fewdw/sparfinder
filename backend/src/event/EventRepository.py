@@ -251,6 +251,12 @@ class EventRepository:
                 {"uuid": event_id},
                 {"$push": {"waiting": boxer_id}},
             )
+            self.boxers.find_one_and_update(
+                {"UUID": boxer_id},
+                {"$push": {"waiting_list": event_id}}
+            )
+
+
             return {"result": "added to waiting list"}
         else:
             # Add boxer to the participants list if the event is not full and is public
@@ -319,3 +325,39 @@ class EventRepository:
         "participated_events":0})
 
         return list(boxers)
+
+    def approve_people_from_waitlist(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"waiting": boxer_id}}
+            )
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$push": {"participants": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"waiting_list": event_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$push": {"participated_events": event_id}}
+            )
+            return {"success": "Boxer approved from waitlist"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
+
+    def remove_people_from_waitlist(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"waiting": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"waiting_list": event_id}}
+            )
+            return {"success": "Boxer removed from waitlist"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
