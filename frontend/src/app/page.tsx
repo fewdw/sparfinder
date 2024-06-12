@@ -7,6 +7,7 @@ import MainPageBanner from "./components/MainPageBanner";
 import MainPageSection from "./components/MainPageSection";
 import NavBar from "./components/NavBar";
 import MenuBar from "./components/MenuBar";
+import LoggedInMainPage from "./components/LoggedInMainPage";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,6 +30,7 @@ export default function Home() {
     return (
       <div>
         <MenuBar></MenuBar>
+        <LoggedInMainPage />
       </div>
     );
   }
