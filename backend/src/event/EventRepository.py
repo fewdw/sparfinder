@@ -383,6 +383,12 @@ class EventRepository:
 
     def invite_boxer_to_event(self, event_id, boxer_id):
         try:
+
+            # check if event full, if so return {"result":"event is full..."}
+            event = self.events.find_one({"uuid": event_id})
+            if len(event.get('participants', [])) >= event.get('max_participants', float('inf')):
+                return {"result": "Event is full"}
+
             # Find the event to ensure it exists and to check its status
             event = self.events.find_one({"uuid": event_id})
             if not event:
@@ -395,13 +401,13 @@ class EventRepository:
                 # Move boxer from waiting to invited
                 self.events.update_one(
                     {'uuid': event_id},
-                    {"$pull": {"waiting": boxer_id}, "$push": {"invited": boxer_id}}
+                    {"$pull": {"waiting": boxer_id}, "$push": {"participants": boxer_id}}
                 )
                 self.boxers.update_one(
                     {'UUID': boxer_id},
-                    {"$pull": {"waiting_list": event_id}, "$push": {"invite_list": event_id}}
+                    {"$pull": {"waiting_list": event_id}, "$push": {"participated_events": event_id}}
                 )
-                return {"result": "Boxer was in waiting list, now invited"}
+                return {"result": "Boxer was in waiting list, now participating"}
             if boxer_id in event.get('invited', []):
                 return {"result": "Boxer already in the invited list"}
 
