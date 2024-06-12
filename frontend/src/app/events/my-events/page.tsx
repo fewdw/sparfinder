@@ -26,7 +26,7 @@ const Page = () => {
   }, [router]);
 
   if (!accountType) {
-    return <div>Loading...</div>; // Or a loading spinner
+    return <div>Loading...</div>;
   }
 
   return (
