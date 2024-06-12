@@ -173,3 +173,16 @@ class EventService:
             return {"error": "You do not have permission to remove a boxer from this event"}
 
         return self.event_repository.remove_boxer_from_participants_by_id(event_id, boxer_id)
+
+    def view_event_waitlist(self, req, event_id):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to view the waitlist for this event"}
+
+        return self.event_repository.view_event_waitlist(event_id)

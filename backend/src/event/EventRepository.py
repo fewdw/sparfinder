@@ -295,3 +295,27 @@ class EventRepository:
             return {"success": "Boxer removed from event"}
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
+
+
+    def view_event_waitlist(self, event_id):
+        query = {
+            "uuid": event_id
+        }
+        fields = {
+            "_id": 0,
+            "waiting": 1
+        }
+        event = self.events.find_one(query, fields)
+        boxers_in_waitlist = list(event["waiting"])
+
+        boxers = self.boxers.find({"UUID": {"$in": boxers_in_waitlist}}, {
+        "_id": 0,
+        "waiting_list":0, 
+        "invite_list":0,
+        "event_rated":0,
+        "boxers_rated":0,
+        "rating":0,
+        "profile_pic":0,
+        "participated_events":0})
+
+        return list(boxers)

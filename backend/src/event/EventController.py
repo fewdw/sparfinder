@@ -53,3 +53,7 @@ def get_event_participants_by_id(event_id):
 @event_bp.route('/participants', methods=['POST'])
 def remove_boxer_from_participants_by_id():
     return jsonify(event_service.remove_boxer_from_participants_by_id(request.get_json()))
+
+@event_bp.route('/waiting/<event_id>', methods=['POST'])
+def view_event_waitlist(event_id):
+    return jsonify(event_service.view_event_waitlist(request.get_json(), event_id))
