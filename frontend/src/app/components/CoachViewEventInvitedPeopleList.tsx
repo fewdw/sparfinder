@@ -7,32 +7,52 @@ const CoachViewEventInvitedPeopleList = ({ eventId }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchInvitedBoxers = async () => {
-      const JWT = Cookies.get('jwt');
-      if (!JWT) {
-        setError('JWT not found. Please log in.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/invite/list', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ JWT, event_id: eventId })
-        });
-        if (!response.ok) throw new Error('Failed to fetch invited boxers.');
-        const data = await response.json();
-        setInvitedBoxers(data);
-      } catch (error) {
-        setError(`Error fetching invited boxers: ${error.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInvitedBoxers();
   }, [eventId]);
+
+  const fetchInvitedBoxers = async () => {
+    const JWT = Cookies.get('jwt');
+    if (!JWT) {
+      setError('JWT not found. Please log in.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/invite/list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ JWT, event_id: eventId })
+      });
+      if (!response.ok) throw new Error('Failed to fetch invited boxers.');
+      const data = await response.json();
+      setInvitedBoxers(data);
+    } catch (error) {
+      setError(`Error fetching invited boxers: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveInvite = async (boxerId) => {
+    const JWT = Cookies.get('jwt');
+    try {
+      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/invite/revoke', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ JWT, event_id: eventId, boxer_id: boxerId })
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setInvitedBoxers(prev => prev.filter(boxer => boxer.UUID !== boxerId));
+      } else {
+        alert(`Failed to revoke invitation: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error revoking invitation:', error);
+      alert('Failed to revoke invitation.');
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -56,7 +76,7 @@ const CoachViewEventInvitedPeopleList = ({ eventId }) => {
                 <span> | </span>
                 <a href={`/find/gyms/gym/${boxer.gym_id}`} className="text-blue-600 hover:text-blue-800">View Gym</a>
               </div>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              <button onClick={() => handleRemoveInvite(boxer.UUID)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                 Remove Invite
               </button>
             </div>
