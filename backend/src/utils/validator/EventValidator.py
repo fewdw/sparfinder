@@ -38,11 +38,16 @@ class EventValidator:
         return date_obj > datetime.now()
 
     def length_time_is_valid(self, length_time):
-        if not length_time:
+        if length_time is None:
             return {"error": "Length time field is required."}
+        try:
+            length_time = int(length_time)
+        except ValueError:
+            return {"error": "Length time must be a number between 1 and 5."}
         if not (1 <= length_time <= 5):
-            return {"error": "Length time must be between 1 and 5 characters long."}
+            return {"error": "Length time must be between 1 and 5."}
         return True
+
 
     def location_is_valid(self, location):
         if not location:
