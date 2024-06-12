@@ -3,22 +3,13 @@ from dotenv import dotenv_values
 import pymongo
 import certifi
 from src.utils.auth.Auth import Auth
+from src.utils.db.Database import Database
 
-env = dotenv_values(".env")
-db_connection_string = env["DATABASE_CONNECTION_STRING"]
 
-db = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
-
-events = db.events.events
-gyms = db.gyms.gyms
-boxers = db.people.boxers
-
-class EventRepository:
+class EventRepository(Database):
     def __init__(self):
-        self.events = events
+        super().__init__()
         self.auth = Auth()
-        self.gyms = gyms
-        self.boxers = boxers
 
     def get_gym_id_by_coach_id(self, coach_id):
         query = {"coaches": coach_id}
@@ -29,13 +20,13 @@ class EventRepository:
         gym = self.gyms.find_one({"UUID": gym_id}, {"address": 1, "_id": 0})
         return gym["address"]
 
-    def create_event(self, event):
+    def create_event(self, new_event):
         try:
-            events.insert_one(event.to_dict())
+            self.events.insert_one(new_event.to_dict())
 
             self.gyms.update_one(
-            {'UUID': event.gym_id}, 
-            {'$push': {'events': event.uuid}}
+            {'UUID': new_event.gym_id}, 
+            {'$push': {'events': new_event.uuid}}
         )
             return {"success": "Event created successfully"}
 

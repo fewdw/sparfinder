@@ -2,23 +2,18 @@ from dotenv import dotenv_values
 import pymongo
 import certifi
 from src.utils.auth.Auth import Auth
+from src.utils.db.Database import Database
 
-env = dotenv_values(".env")
-db_connection_string = env["DATABASE_CONNECTION_STRING"]
-
-client = pymongo.MongoClient(db_connection_string, tlsCAFile=certifi.where())
-db = client.people
-
-class CoachRepository:
+class CoachRepository(Database):
     def __init__(self):
-        self.db = db
+        super().__init__()
         self.auth = Auth()
 
     def get_coach_profile_by_id(self, id):
         query = {"UUID": str(id)}
         # Specify the fields to include in the results
         fields = {"fname": 1, "lname": 1, "profile_pic": 1, "_id": 0}
-        result = self.db.coaches.find_one(query, fields)
+        result = self.coaches.find_one(query, fields)
         if result:
             return result
         else:
@@ -33,13 +28,13 @@ class CoachRepository:
                 "profile_pic": profile_pic
             }
         }
-        result = self.db.coaches.update_one(query, update)
+        result = self.coaches.update_one(query, update)
         if result.matched_count == 0:
             return {"error" : "No profile found with the given ID."}
         elif result.modified_count == 0:
             return {"error" : "No update needed, the data is the same."}
         else:
-            user = self.auth.get_user_info_for_jwt(email, self.db)
+            user = self.auth.get_user_info_for_jwt(email, self.people)
             token = self.auth.create_jwt_token(user)
             return {
                 "Success":"Profile updated successfully.",
@@ -48,5 +43,5 @@ class CoachRepository:
 
     def get_all_coaches(self):
         fields = {"fname": 1, "lname": 1, "gym_id":1, "_id": 0}
-        results = self.db.coaches.find({}, fields)
+        results = self.coaches.find({}, fields)
         return list(results)

@@ -12,6 +12,7 @@ gyms = client.gyms
 
 class BoxerRepository:
     def __init__(self):
+        super().__init__()
         self.db = db
         self.auth = Auth()
         self.gyms = gyms
