@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import {GET_EVENT_WAITING_LIST} from '../utils/apiConfig';
+import { GET_EVENT_WAITING_LIST, APPROVE_BOXER_WAITLIST, REMOVE_BOXER_FROM_WAITLIST} from '../utils/apiConfig';
 
 const CoachViewEventWaitingPeopleList = ({ eventId }) => {
   const [waitingList, setWaitingList] = useState([]);
@@ -8,38 +8,61 @@ const CoachViewEventWaitingPeopleList = ({ eventId }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchWaitingList = async () => {
-      const JWT = Cookies.get('jwt');
-      if (!JWT) {
-        setError('No JWT found, please log in.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(`${GET_EVENT_WAITING_LIST}/${eventId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ JWT })
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch waiting list');
-        }
-
-        const data = await response.json();
-        setWaitingList(data);
-      } catch (error) {
-        setError('Failed to load waiting list: ' + error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchWaitingList();
   }, [eventId]);
+
+  const fetchWaitingList = async () => {
+    const JWT = Cookies.get('jwt');
+    if (!JWT) {
+      setError('No JWT found, please log in.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${GET_EVENT_WAITING_LIST}/${eventId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ JWT })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch waiting list');
+      }
+
+      const data = await response.json();
+      setWaitingList(data);
+    } catch (error) {
+      setError('Failed to load waiting list: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAction = async (action, boxerId) => {
+    const JWT = Cookies.get('jwt');
+    const url = action === 'approve' 
+      ? `${APPROVE_BOXER_WAITLIST}/${eventId}`
+      : `${REMOVE_BOXER_FROM_WAITLIST}/${eventId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ JWT, boxer_id: boxerId })
+      });
+      const result = await response.json();
+      if (!result.error) {
+        setWaitingList(prev => prev.filter(person => person.UUID !== boxerId));
+      } else {
+        setError(result.error);
+      }
+    } catch (error) {
+      setError('Failed to perform action: ' + error.message);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -75,8 +98,8 @@ const CoachViewEventWaitingPeopleList = ({ eventId }) => {
                 <div className="flex space-x-2">
                   <a href={`/find/boxers/boxer/${person.UUID}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Boxer Page</a>
                   <a href={`/find/gyms/gym/${person.gym_id}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Gym Page</a>
-                  <button className="rounded bg-green-500 px-4 py-2 text-xs font-medium text-white hover:bg-green-700">Approve</button>
-                  <button className="rounded bg-red-500 px-4 py-2 text-xs font-medium text-white hover:bg-red-700">Remove</button>
+                  <button onClick={() => handleAction('approve', person.UUID)} className="rounded bg-green-500 px-4 py-2 text-xs font-medium text-white hover:bg-green-700">Approve</button>
+                  <button onClick={() => handleAction('remove', person.UUID)} className="rounded bg-red-500 px-4 py-2 text-xs font-medium text-white hover:bg-red-700">Remove</button>
                 </div>
               </td>
             </tr>

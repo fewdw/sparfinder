@@ -34,3 +34,5 @@ export const GET_ALL_EVENTS_EVENTS_PAGE_PAST = `${BASE_URL}/sparfinder/api/event
 export const BOXER_PARTICIPATE_TO_EVENT = `${BASE_URL}/sparfinder/api/event/participate`;
 export const GET_LIST_OF_PARTICIPANTS = `${BASE_URL}/sparfinder/api/event/participants`;
 export const GET_EVENT_WAITING_LIST = `${BASE_URL}/sparfinder/api/event/waiting`;
+export const APPROVE_BOXER_WAITLIST = `${BASE_URL}/sparfinder/api/event/approve`;
+export const REMOVE_BOXER_FROM_WAITLIST = `${BASE_URL}/sparfinder/api/event/remove`;
