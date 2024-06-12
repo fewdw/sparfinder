@@ -368,3 +368,54 @@ class EventRepository:
             return {"success": "Boxer removed from waitlist"}
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
+
+
+    def get_coach_event_name_and_id_by_id(self, coach_id):
+        # find the coaches gym id
+        gym_id = self.get_gym_id_by_coach_id(coach_id)
+        # find gym by id and return the events field
+        gym = self.gyms.find_one({"UUID": gym_id}, {"events": 1, "_id": 0})
+        gym_events_ids = gym["events"]
+        # for each event find the full event information, make sure date is $gte today
+        today_str = date.today().strftime('%Y-%m-%d')
+        gym_events = self.events.find({"uuid": {"$in": gym_events_ids}, "date": {"$gte": today_str}},{"_id": 0, "uuid": 1, "name": 1})
+        return(list(gym_events))
+
+    def invite_boxer_to_event(self, event_id, boxer_id):
+        try:
+            # Find the event to ensure it exists and to check its status
+            event = self.events.find_one({"uuid": event_id})
+            if not event:
+                return {"error": "Event not found"}
+
+            # Check if the boxer is already participating, waiting, or invited
+            if boxer_id in event.get('participants', []):
+                return {"result": "Boxer already participating"}
+            if boxer_id in event.get('waiting', []):
+                # Move boxer from waiting to invited
+                self.events.update_one(
+                    {'uuid': event_id},
+                    {"$pull": {"waiting": boxer_id}, "$push": {"invited": boxer_id}}
+                )
+                self.boxers.update_one(
+                    {'UUID': boxer_id},
+                    {"$pull": {"waiting_list": event_id}, "$push": {"invite_list": event_id}}
+                )
+                return {"result": "Boxer was in waiting list, now invited"}
+            if boxer_id in event.get('invited', []):
+                return {"result": "Boxer already in the invited list"}
+
+            # If boxer is neither participating, waiting, nor invited, invite them now
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$push": {"invited": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$push": {"invite_list": event_id}}
+            )
+            return {"success": "Boxer invited to event"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
+
+        

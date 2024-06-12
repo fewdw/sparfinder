@@ -216,3 +216,46 @@ class EventService:
             return {"error": "You do not have permission to remove people from the waitlist for this event"}
 
         return self.event_repository.remove_people_from_waitlist(event_id, boxer_id)
+
+    def get_coach_event_name_and_id_by_id(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.get_coach_event_name_and_id_by_id(coach_id)
+
+    def invite_boxer_to_event(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+            boxer_id = req.get("boxer_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to invite a boxer to this event"}
+
+        return self.event_repository.invite_boxer_to_event(event_id, boxer_id)
+
+    def invite_boxer_to_event(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+            boxer_id = req.get("boxer_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        if event_id is None or boxer_id is None or coach_id is None:
+            return {"result": "You must provide an event_id, boxer_id and coach_id"}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to invite a boxer to this event"}
+
+        return self.event_repository.invite_boxer_to_event(event_id, boxer_id)

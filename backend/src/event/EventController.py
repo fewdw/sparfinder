@@ -65,3 +65,11 @@ def approve_people_from_waitlist(event_id):
 @event_bp.route('/remove/<event_id>', methods=['POST'])
 def remove_people_from_waitlist(event_id):
     return jsonify(event_service.remove_people_from_waitlist(request.get_json(), event_id))
+
+@event_bp.route('/coach/events', methods=['POST'])
+def get_coach_event_name_and_id_by_id():
+    return jsonify(event_service.get_coach_event_name_and_id_by_id(request.get_json()))
+
+@event_bp.route('/invite', methods=['POST'])
+def invite_boxer_to_event():
+    return jsonify(event_service.invite_boxer_to_event(request.get_json()))
