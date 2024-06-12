@@ -289,3 +289,79 @@ class EventService:
             return {"error": "You do not have permission to revoke an invitation for this event"}
 
         return self.event_repository.revoke_invitation(event_id, boxer_id)
+
+    def view_boxers_participating_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.view_boxers_participating_events(boxer_id)
+
+    def boxer_leave_participating_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.boxer_leave_participating_events(event_id, boxer_id)
+
+    def view_boxers_waiting_list_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.view_boxers_waiting_list_events(boxer_id)
+
+    def boxer_leave_waiting_list_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.boxer_leave_waiting_list_events(event_id, boxer_id)
+
+
+    def view_boxers_invited_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.view_boxers_invited_events(boxer_id)
+
+
+    def boxer_leave_invited_events(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.boxer_leave_invited_events(event_id, boxer_id)
+
+    def boxer_accept_invitation(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            boxer_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        return self.event_repository.boxer_accept_invitation(event_id, boxer_id)

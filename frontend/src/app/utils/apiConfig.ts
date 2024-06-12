@@ -38,3 +38,5 @@ export const APPROVE_BOXER_WAITLIST = `${BASE_URL}/sparfinder/api/event/approve`
 export const REMOVE_BOXER_FROM_WAITLIST = `${BASE_URL}/sparfinder/api/event/remove`;
 export const VIEW_COACH_EVENTS_NAME_AND_IDs = `${BASE_URL}/sparfinder/api/event/coach/events`;
 export const INVITE_BOXER_TO_EVENT = `${BASE_URL}/sparfinder/api/event/invite`;
+export const VIEW_EVENT_INVITE_LIST = `${BASE_URL}/sparfinder/api/event/invite/list`;
+export const REVOKE_INVITE = `${BASE_URL}/sparfinder/api/event/invite/revoke`;

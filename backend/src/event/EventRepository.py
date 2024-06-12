@@ -461,3 +461,102 @@ class EventRepository:
             return {"success": "Boxer invitation revoked"}
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
+
+
+    def view_boxers_participating_events(self, boxer_id):
+        query = {
+            "UUID": boxer_id
+        }
+        boxer = self.boxers.find_one(query, {"participated_events": 1, "_id": 0})
+        participating_event_list = list(boxer["participated_events"])
+        events = self.events.find({"uuid": {"$in": participating_event_list}}, {"_id": 0, "uuid": 1, "name": 1})
+        return list(events)
+
+    def boxer_leave_participating_events(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"participants": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"participated_events": event_id}}
+            )
+            return {"success": "Boxer removed from event"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
+
+    def view_boxers_waiting_list_events(self, boxer_id):
+        query = {
+            "UUID": boxer_id
+        }
+        boxer = self.boxers.find_one(query, {"waiting_list": 1, "_id": 0})
+        waiting_event_list = list(boxer["waiting_list"])
+        events = self.events.find({"uuid": {"$in": waiting_event_list}}, {"_id": 0, "uuid": 1, "name": 1})
+        return list(events)
+
+    def boxer_leave_waiting_list_events(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"waiting": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"waiting_list": event_id}}
+            )
+            return {"success": "Boxer removed from event"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
+
+
+    def view_boxers_invited_events(self, boxer_id):
+        query = {
+            "UUID": boxer_id
+        }
+        boxer = self.boxers.find_one(query, {"invite_list": 1, "_id": 0})
+        invited_event_list = list(boxer["invite_list"])
+        events = self.events.find({"uuid": {"$in": invited_event_list}}, {"_id": 0, "uuid": 1, "name": 1})
+        return list(events)
+
+    def boxer_leave_invited_events(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"invited": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"invite_list": event_id}}
+            )
+            return {"success": "Boxer removed from event"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}
+
+    def boxer_accept_invitation(self, event_id, boxer_id):
+        try:
+            current_event = self.events.find_one({"uuid": event_id})
+            is_full = len(current_event.get('participants', [])) >= current_event.get('max_participants', float('inf'))
+
+            if is_full:
+                return {"error": "Event is already full"}
+
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"invited": boxer_id}}
+            )
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$push": {"participants": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"invite_list": event_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$push": {"participated_events": event_id}}
+            )
+            return {"success": "Boxer accepted invitation"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}

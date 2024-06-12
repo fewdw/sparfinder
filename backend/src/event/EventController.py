@@ -82,3 +82,38 @@ def get_invited_boxers_list():
 @event_bp.route('/invite/revoke', methods=['POST'])
 def revoke_invitation():
     return jsonify(event_service.revoke_invitation(request.get_json()))
+
+# route to view boxers participating events
+@event_bp.route('/boxer/view/participating', methods=['POST'])
+def view_boxers_participating_events():
+    return jsonify(event_service.view_boxers_participating_events(request.get_json()))
+
+# route to leave boxers participating events
+@event_bp.route('/boxer/leave/participating', methods=['POST'])
+def boxer_leave_participating_events():
+    return jsonify(event_service.boxer_leave_participating_events(request.get_json()))
+
+# route to view boxers waiting list events
+@event_bp.route('/boxer/view/waiting', methods=['POST'])
+def view_boxers_waiting_list_events():
+    return jsonify(event_service.view_boxers_waiting_list_events(request.get_json()))
+
+# route to leave boxers waiting list events
+@event_bp.route('/boxer/leave/waiting', methods=['POST'])
+def boxer_leave_waiting_list_events():
+    return jsonify(event_service.boxer_leave_waiting_list_events(request.get_json()))
+
+# route to view boxers invited events
+@event_bp.route('/boxer/view/invited', methods=['POST'])
+def view_boxers_invited_events():
+    return jsonify(event_service.view_boxers_invited_events(request.get_json()))
+
+# route to leave boxers invited events
+@event_bp.route('/boxer/leave/invited', methods=['POST'])
+def boxer_leave_invited_events():
+    return jsonify(event_service.boxer_leave_invited_events(request.get_json()))
+
+# route to accept invitation
+@event_bp.route('/boxer/accept/invitation', methods=['POST'])
+def boxer_accept_invitation():
+    return jsonify(event_service.boxer_accept_invitation(request.get_json()))

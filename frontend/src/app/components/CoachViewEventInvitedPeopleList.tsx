@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import {VIEW_EVENT_INVITE_LIST, REVOKE_INVITE } from '../utils/apiConfig';
 
 const CoachViewEventInvitedPeopleList = ({ eventId }) => {
   const [invitedBoxers, setInvitedBoxers] = useState([]);
@@ -19,7 +20,7 @@ const CoachViewEventInvitedPeopleList = ({ eventId }) => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/invite/list', {
+      const response = await fetch(VIEW_EVENT_INVITE_LIST, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ JWT, event_id: eventId })
@@ -37,7 +38,7 @@ const CoachViewEventInvitedPeopleList = ({ eventId }) => {
   const handleRemoveInvite = async (boxerId) => {
     const JWT = Cookies.get('jwt');
     try {
-      const response = await fetch('http://127.0.0.1:5000/sparfinder/api/event/invite/revoke', {
+      const response = await fetch(REVOKE_INVITE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ JWT, event_id: eventId, boxer_id: boxerId })
