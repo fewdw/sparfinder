@@ -11,20 +11,17 @@ const ViewAllEvents = () => {
     maxDate: '',
     minTime: '',
     maxTime: '',
-    isPrivate: false,
+    isPrivate: true,  // Default to true
+    isPublic: true,   // Default to true
     hasPlace: false
   });
 
   const fetchEvents = async () => {
     let url = activeTab === 'future' ? GET_ALL_EVENTS_EVENTS_PAGE_FUTURE : GET_ALL_EVENTS_EVENTS_PAGE_PAST;
     const queryParams = new URLSearchParams();
-    if (filters.minDate) queryParams.append('min_date', filters.minDate);
-    if (filters.maxDate) queryParams.append('max_date', filters.maxDate);
-    if (filters.minTime) queryParams.append('min_time', filters.minTime);
-    if (filters.maxTime) queryParams.append('max_time', filters.maxTime);
-    if (filters.isPrivate) queryParams.append('is_private', filters.isPrivate);
-    if (filters.hasPlace) queryParams.append('has_place', filters.hasPlace);
-
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) queryParams.append(key, value);
+    }
     url += `?${queryParams.toString()}`;
     setLoading(true);
     try {
@@ -52,7 +49,8 @@ const ViewAllEvents = () => {
       maxDate: '',
       minTime: '',
       maxTime: '',
-      isPrivate: false,
+      isPrivate: true,
+      isPublic: true,
       hasPlace: false
     });
   };
