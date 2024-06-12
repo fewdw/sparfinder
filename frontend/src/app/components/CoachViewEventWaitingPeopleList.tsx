@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { GET_EVENT_WAITING_LIST, APPROVE_BOXER_WAITLIST, REMOVE_BOXER_FROM_WAITLIST} from '../utils/apiConfig';
+import Link from 'next/link';
 
 const CoachViewEventWaitingPeopleList = ({ eventId }) => {
   const [waitingList, setWaitingList] = useState([]);
@@ -96,8 +97,8 @@ const CoachViewEventWaitingPeopleList = ({ eventId }) => {
               <td className="px-4 py-2 text-gray-700">{person.num_of_fights}</td>
               <td className="px-4 py-2">
                 <div className="flex space-x-2">
-                  <a href={`/find/boxers/boxer/${person.UUID}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Boxer Page</a>
-                  <a href={`/find/gyms/gym/${person.gym_id}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Gym Page</a>
+                  <Link href={`/find/boxers/boxer/${person.UUID}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Boxer Page</Link>
+                  <Link href={`/find/gyms/gym/${person.gym_id}`} className="rounded bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700">View Gym Page</Link>
                   <button onClick={() => handleAction('approve', person.UUID)} className="rounded bg-green-500 px-4 py-2 text-xs font-medium text-white hover:bg-green-700">Approve</button>
                   <button onClick={() => handleAction('remove', person.UUID)} className="rounded bg-red-500 px-4 py-2 text-xs font-medium text-white hover:bg-red-700">Remove</button>
                 </div>

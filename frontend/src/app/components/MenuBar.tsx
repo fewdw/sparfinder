@@ -1,11 +1,20 @@
-'use client';
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import React, { useState } from "react";
+import Cookies from 'js-cookie';
 
 const MenuBar = () => {
   const [isFindOpen, setIsFindOpen] = useState(false);
   const [isEventsOpen, setIsEventsOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [accountType, setAccountType] = useState('');
+
+  useEffect(() => {
+    const JWT = Cookies.get('jwt');
+    if (JWT) {
+      const decoded = JSON.parse(atob(JWT.split('.')[1])); // Decoding the JWT
+      setAccountType(decoded.account_type);
+    }
+  }, []);
 
   const toggleDropdown = (
     setDropdownState: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,7 +28,7 @@ const MenuBar = () => {
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex-1 md:flex md:items-center md:gap-12">
-              <Link className="block text-red-500 font-extrabold" href="/">
+              <Link href="/" className="block text-red-500 font-extrabold">
                 <span className="sr-only">Home</span>
                 SparFinder. 🥊
               </Link>
@@ -57,24 +66,9 @@ const MenuBar = () => {
                     {isFindOpen && (
                       <div className="absolute left-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg">
                         <div className="p-2">
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/find/coaches"
-                          >
-                            Coaches
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/find/boxers"
-                          >
-                            Boxers
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/find/gyms"
-                          >
-                            Gyms
-                          </Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/find/coaches">Coaches</Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/find/boxers">Boxers</Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/find/gyms">Gyms</Link>
                         </div>
                       </div>
                     )}
@@ -108,30 +102,14 @@ const MenuBar = () => {
                     {isEventsOpen && (
                       <div className="absolute left-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg">
                         <div className="p-2">
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/events/my-events"
-                          >
-                            My Events
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/events/all-events"
-                          >
-                            All Events
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/events/waiting-list"
-                          >
-                            Waiting List
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/events/invite-list"
-                          >
-                            Invite List
-                          </Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/events/my-events">My Events</Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/events/all-events">All Events</Link>
+                          {accountType === 'boxer' && (
+                            <>
+                              <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/events/waiting-list">Waiting List</Link>
+                              <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/events/invite-list">Invite List</Link>
+                            </>
+                          )}
                         </div>
                       </div>
                     )}
@@ -165,18 +143,8 @@ const MenuBar = () => {
                     {isAccountOpen && (
                       <div className="absolute left-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg">
                         <div className="p-2">
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/account/details"
-                          >
-                            Account Details
-                          </Link>
-                          <Link
-                            className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                            href="/logout"
-                          >
-                            Logout
-                          </Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/account/details">Account Details</Link>
+                          <Link className="block rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-700" href="/logout">Logout</Link>
                         </div>
                       </div>
                     )}

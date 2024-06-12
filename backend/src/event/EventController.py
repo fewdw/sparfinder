@@ -58,13 +58,10 @@ def remove_boxer_from_participants_by_id():
 def view_event_waitlist(event_id):
     return jsonify(event_service.view_event_waitlist(request.get_json(), event_id))
 
-# approve people from waitlist to participants
 @event_bp.route('/approve/<event_id>', methods=['POST'])
 def approve_people_from_waitlist(event_id):
     return jsonify(event_service.approve_people_from_waitlist(request.get_json(), event_id))
 
-# remove people from waitlist
 @event_bp.route('/remove/<event_id>', methods=['POST'])
 def remove_people_from_waitlist(event_id):
     return jsonify(event_service.remove_people_from_waitlist(request.get_json(), event_id))
-
