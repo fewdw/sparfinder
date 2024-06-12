@@ -259,3 +259,33 @@ class EventService:
             return {"error": "You do not have permission to invite a boxer to this event"}
 
         return self.event_repository.invite_boxer_to_event(event_id, boxer_id)
+
+
+    def get_invited_boxers_list(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to view the invited boxers for this event"}
+
+        return self.event_repository.get_invited_boxers_list(event_id)
+
+    def revoke_invitation(self, req):
+        try:
+            JWT = req.get("JWT", None)
+            extracted_jwt = self.auth.extract_jwt(JWT)
+            coach_id = extracted_jwt['uuid']
+            event_id = req.get("event_id", None)
+            boxer_id = req.get("boxer_id", None)
+        except Exception as e:
+            return {"error": str(e)}
+
+        if not self.event_repository.event_belongs_to_coach(event_id, coach_id):
+            return {"error": "You do not have permission to revoke an invitation for this event"}
+
+        return self.event_repository.revoke_invitation(event_id, boxer_id)

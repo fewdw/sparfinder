@@ -424,4 +424,40 @@ class EventRepository:
         except Exception as e:
             return {"error": f"There was an error reaching the database: {e}"}
 
-        
+    def get_invited_boxers_list(self, event_id):
+        query = {
+            "uuid": event_id
+        }
+        fields = {
+            "_id": 0,
+            "invited": 1
+        }
+        event = self.events.find_one(query, fields)
+        boxers_in_invited = list(event["invited"])
+
+        boxers = self.boxers.find({"UUID": {"$in": boxers_in_invited}}, {
+        "_id": 0,
+        "waiting_list":0, 
+        "invite_list":0,
+        "event_rated":0,
+        "boxers_rated":0,
+        "rating":0,
+        "profile_pic":0,
+        "participated_events":0})
+
+        return list(boxers)
+
+
+    def revoke_invitation(self, event_id, boxer_id):
+        try:
+            self.events.update_one(
+                {'uuid': event_id},
+                {"$pull": {"invited": boxer_id}}
+            )
+            self.boxers.update_one(
+                {'UUID': boxer_id},
+                {"$pull": {"invite_list": event_id}}
+            )
+            return {"success": "Boxer invitation revoked"}
+        except Exception as e:
+            return {"error": f"There was an error reaching the database: {e}"}

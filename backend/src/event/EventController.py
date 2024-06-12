@@ -73,3 +73,12 @@ def get_coach_event_name_and_id_by_id():
 @event_bp.route('/invite', methods=['POST'])
 def invite_boxer_to_event():
     return jsonify(event_service.invite_boxer_to_event(request.get_json()))
+
+@event_bp.route('/invite/list', methods=['POST'])
+def get_invited_boxers_list():
+    return jsonify(event_service.get_invited_boxers_list(request.get_json()))
+
+
+@event_bp.route('/invite/revoke', methods=['POST'])
+def revoke_invitation():
+    return jsonify(event_service.revoke_invitation(request.get_json()))
