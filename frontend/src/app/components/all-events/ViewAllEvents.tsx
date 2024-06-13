@@ -20,7 +20,7 @@ const ViewAllEvents = () => {
     let url = activeTab === 'future' ? GET_ALL_EVENTS_EVENTS_PAGE_FUTURE : GET_ALL_EVENTS_EVENTS_PAGE_PAST;
     const queryParams = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
-      if (value) queryParams.append(key, value);
+      if (value) queryParams.append(key, value.toString());
     }
     url += `?${queryParams.toString()}`;
     setLoading(true);
@@ -39,7 +39,7 @@ const ViewAllEvents = () => {
     fetchEvents();
   }, [activeTab, filters]);
 
-  const handleFilterChange = (field, value) => {
+  const handleFilterChange = (field: string, value: any) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
 
@@ -105,8 +105,8 @@ const ViewAllEvents = () => {
         <p>Loading...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-          {events.map(event => <EventCard key={event.uuid} event={event} />)}
-        </div>
+{events.map((event: { uuid: string }) => <EventCard key={event.uuid} event={event} />)}
+</div>
       )}
     </div>
   );

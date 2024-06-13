@@ -1,6 +1,6 @@
 import React from "react";
 
-const BoxerProfileCard = ({ boxer }) => {
+const BoxerProfileCard = ({ boxer }: { boxer: any }) => {
   return (
     <div className="flow-root rounded-lg border border-gray-100 py-3 shadow-sm mt-10">
       <dl className="-my-3 divide-y divide-gray-100 text-sm">

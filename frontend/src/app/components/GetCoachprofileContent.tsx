@@ -27,7 +27,7 @@ const GetCoachProfileContent = () => {
         }
         setCoachProfile(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       } finally {
         setLoading(false);
       }
@@ -48,9 +48,9 @@ const GetCoachProfileContent = () => {
     <div className="m-0">
       {coachProfile ? (
         <UserProfilePicAndName
-          name={`${coachProfile.fname} ${coachProfile.lname}`}
-          bio={`Coach`}
-          imageSrc={coachProfile.profile_pic}
+        name={`${(coachProfile as { fname: string; lname: string }).fname} ${(coachProfile as { fname: string; lname: string }).lname}`}
+        bio={`Coach`}
+        imageSrc={(coachProfile as { profile_pic: string }).profile_pic}
         ></UserProfilePicAndName>
       ) : (
         <p>No profile data found.</p>

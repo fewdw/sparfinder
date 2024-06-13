@@ -17,8 +17,13 @@ const UpdateCoachProfileForm = () => {
     setLname(e.target.value);
   };
 
+  interface ErrorObject {
+    fname?: string;
+    lname?: string;
+  }
+  
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: ErrorObject = {};
     if (!validateName(fname)) {
       newErrors.fname = "Invalid first name.";
     }
@@ -28,6 +33,7 @@ const UpdateCoachProfileForm = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +42,10 @@ const UpdateCoachProfileForm = () => {
     }
 
     const jwtToken = Cookies.get("jwt");
-    const { email } = jwtDecode(jwtToken);
+    interface JwtPayload {
+      email?: string; // Add other expected properties as necessary
+    }
+    const { email } = jwtDecode<JwtPayload>(jwtToken);
 
     const payload = {
       JWT: jwtToken,
@@ -95,9 +104,8 @@ const UpdateCoachProfileForm = () => {
             value={fname}
             onChange={handleFnameChange}
           />
-          {errors.fname && (
-            <p className="text-red-500 text-xs mt-2">{errors.fname}</p>
-          )}
+{(errors as any).fname && <p className="text-red-500 text-xs mt-2">{(errors as any).fname}</p>}
+
         </div>
 
         <div>
@@ -112,9 +120,8 @@ const UpdateCoachProfileForm = () => {
             value={lname}
             onChange={handleLnameChange}
           />
-          {errors.lname && (
-            <p className="text-red-500 text-xs mt-2">{errors.lname}</p>
-          )}
+{(errors as any).lname && <p className="text-red-500 text-xs mt-2">{(errors as any).lname}</p>}
+
         </div>
 
         <button
@@ -123,9 +130,8 @@ const UpdateCoachProfileForm = () => {
         >
           Update Profile
         </button>
-        {errors.form && (
-          <p className="text-red-500 text-xs mt-2">{errors.form}</p>
-        )}
+        {(errors as any).form && <p className="text-red-500 text-xs mt-2">{(errors as any).form}</p>}
+
       </form>
     </div>
   );

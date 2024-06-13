@@ -1,10 +1,10 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const DisplayFindCoachProfile = ({ coach }) => {
+const DisplayFindCoachProfile = ({ coach }: { coach: any }) => {
   const router = useRouter();
 
-  const handleViewGym = (gym_id) => {
+  const handleViewGym = (gym_id: any) => {
     router.push(`/find/gyms/gym/${gym_id}`);
   };
 

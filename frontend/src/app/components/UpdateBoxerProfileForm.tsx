@@ -31,16 +31,19 @@ const UpdateBoxerProfileForm = () => {
   };
 
   const validateForm = () => {
-    let newErrors = {};
-    if (!validateName(formData.fname)) newErrors.fname = "Invalid first name.";
-    if (!validateName(formData.lname)) newErrors.lname = "Invalid last name.";
-    if (!validateDate(formData.birthDate))
+    let newErrors: any = {};
+    if (!validateName((formData as any).fname))
+      newErrors.fname = "Invalid first name.";
+    if (!validateName((formData as any).lname))
+      newErrors.lname = "Invalid last name.";
+    if (!validateDate((formData as any).birthDate))
       newErrors.birthDate = "Invalid birth date.";
-    if (!validateNumOfFights(formData.numOfFights))
+    if (!validateNumOfFights((formData as any).numOfFights))
       newErrors.numOfFights = "Invalid number of fights.";
-    if (!validateWeight(formData.weight)) newErrors.weight = "Invalid weight.";
+    if (!validateWeight((formData as any).weight))
+      newErrors.weight = "Invalid weight.";
     if (
-      !validateSelect(formData.country, [
+      !validateSelect((formData as any).country, [
         "Canada",
         "US",
         "Mexico",
@@ -52,11 +55,17 @@ const UpdateBoxerProfileForm = () => {
       ])
     )
       newErrors.country = "Invalid country.";
-    if (!validateSelect(formData.gender, ["Male", "Female"]))
+    if (!validateSelect((formData as any).gender, ["Male", "Female"]))
       newErrors.gender = "Invalid gender.";
-    if (!validateSelect(formData.level, ["Recreational", "Amateur", "Pro"]))
+    if (
+      !validateSelect((formData as any).level, [
+        "Recreational",
+        "Amateur",
+        "Pro",
+      ])
+    )
       newErrors.level = "Invalid level.";
-    if (!validateSelect(formData.stance, ["Orthodox", "Southpaw"]))
+    if (!validateSelect((formData as any).stance, ["Orthodox", "Southpaw"]))
       newErrors.stance = "Invalid stance.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -67,7 +76,7 @@ const UpdateBoxerProfileForm = () => {
     if (!validateForm()) return;
 
     const jwtToken = Cookies.get("jwt");
-    const { email } = jwtDecode(jwtToken);
+    const { email } = jwtDecode<any>(jwtToken);
 
     const payload = {
       JWT: jwtToken,
@@ -130,8 +139,8 @@ const UpdateBoxerProfileForm = () => {
             placeholder="Enter your first name"
             className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
           />
-          {errors.fname && (
-            <p className="text-red-500 text-xs mt-2">{errors.fname}</p>
+          {(errors as any).fname && (
+            <p className="text-red-500 text-xs mt-2">{(errors as any).fname}</p>
           )}
         </div>
 
@@ -148,8 +157,8 @@ const UpdateBoxerProfileForm = () => {
             placeholder="Enter your last name"
             className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
           />
-          {errors.lname && (
-            <p className="text-red-500 text-xs mt-2">{errors.lname}</p>
+          {(errors as any).lname && (
+            <p className="text-red-500 text-xs mt-2">{(errors as any).lname}</p>
           )}
         </div>
 
@@ -168,8 +177,10 @@ const UpdateBoxerProfileForm = () => {
             onChange={handleChange}
             className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm"
           />
-          {errors.birthDate && (
-            <p className="text-red-500 text-xs mt-2">{errors.birthDate}</p>
+          {(errors as any).birthDate && (
+            <p className="text-red-500 text-xs mt-2">
+              {(errors as any).birthDate}
+            </p>
           )}
         </div>
 
@@ -326,8 +337,10 @@ const UpdateBoxerProfileForm = () => {
             placeholder="Enter your weight in lbs"
             className="w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
           />
-          {errors.weight && (
-            <p className="text-red-500 text-xs mt-2">{errors.weight}</p>
+          {(errors as any).weight && (
+            <p className="text-red-500 text-xs mt-2">
+              {(errors as any).weight}
+            </p>
           )}
         </div>
 
@@ -375,8 +388,8 @@ const UpdateBoxerProfileForm = () => {
         >
           Update Profile
         </button>
-        {errors.form && (
-          <p className="text-red-500 text-xs mt-2">{errors.form}</p>
+        {(errors as any).form && (
+          <p className="text-red-500 text-xs mt-2">{(errors as any).form}</p>
         )}
       </form>
     </div>

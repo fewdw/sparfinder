@@ -28,7 +28,7 @@ const GetBoxerProfileContent = () => {
         }
         setBoxerProfile(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       } finally {
         setLoading(false);
       }
@@ -50,8 +50,8 @@ const GetBoxerProfileContent = () => {
       {boxerProfile ? (
         <div>
           <UserProfilePicAndName
-            name={`${boxerProfile.fname} ${boxerProfile.lname}`}
-            imageSrc={boxerProfile.profile_pic}
+name={`${(boxerProfile as { fname: string; lname: string }).fname} ${(boxerProfile as { fname: string; lname: string }).lname}`}
+imageSrc={(boxerProfile as { profile_pic: string }).profile_pic}
             bio="Boxer"
           ></UserProfilePicAndName>
           <BoxerProfileCard boxer={boxerProfile} />

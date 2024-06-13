@@ -29,11 +29,11 @@ const BoxerUpdateGymForm = () => {
         if (data.name) {
           setCurrentGym(data.name);
         } else {
-          setError('No gym found for this boxer.');
+          setError('No gym found for this boxer.'as unknown as null);
         }
       } catch (error) {
         console.error('Error fetching current gym:', error);
-        setError(error.message);
+        setError(error as unknown as null);
       }
     };
 
@@ -70,11 +70,13 @@ const BoxerUpdateGymForm = () => {
       if (!response.ok) {
         throw new Error(data.error || 'Failed to associate with gym');
       }
-      setCurrentGym(gyms.find(gym => gym.UUID === selectedGymId).name); // Update the current gym name on the frontend
-      alert('Gym chosen successfully.');
+      const selectedGym = gyms.find((gym: { UUID: string; name: string }) => gym.UUID === selectedGymId) as { UUID: string; name: string } | undefined;
+      setCurrentGym(selectedGym ? selectedGym.name : '');
+      
+            alert('Gym chosen successfully.');
     } catch (error) {
       console.error('Error associating with gym:', error);
-      alert('Failed to associate with gym: ' + error.message);
+      alert('Failed to associate with gym: ' + (error as Error).message);
     }
   };
 
@@ -100,7 +102,7 @@ const BoxerUpdateGymForm = () => {
             >
               <option value="">Select a gym</option>
               {gyms.map((gym) => (
-                <option key={gym.UUID} value={gym.UUID}>{gym.name}</option>
+                <option key={(gym as { UUID: string }).UUID} value={(gym as { UUID: string }).UUID}>{(gym as { name: string }).name}</option>
               ))}
             </select>
             <button

@@ -1,40 +1,49 @@
-import React, { useState } from 'react';
-import Cookies from 'js-cookie';
-import { UPDATE_OR_DELETE_COACH_GYM } from '../utils/apiConfig';
-import { validateGymName, validateGymAddress } from '../utils/Validator';
+import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { UPDATE_OR_DELETE_COACH_GYM } from "../utils/apiConfig";
+import { validateGymName, validateGymAddress } from "../utils/Validator";
 
 const CreateGymForm = () => {
-  const [gymName, setGymName] = useState('');
-  const [gymAddress, setGymAddress] = useState('');
-  const [gymRules, setGymRules] = useState('');
-  const [gymLevel, setGymLevel] = useState(''); // Initially no level selected
+  const [gymName, setGymName] = useState("");
+  const [gymAddress, setGymAddress] = useState("");
+  const [gymRules, setGymRules] = useState("");
+  const [gymLevel, setGymLevel] = useState(""); // Initially no level selected
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: {
+      gymName?: string;
+      gymAddress?: string;
+      gymRules?: string;
+      gymLevel?: string;
+    } = {};
     if (!validateGymName(gymName)) {
-      newErrors.gymName = 'Gym name must be between 5 and 50 characters and only include letters, numbers, and spaces.';
+      newErrors.gymName =
+        "Gym name must be between 5 and 50 characters and only include letters, numbers, and spaces.";
     }
     if (!validateGymAddress(gymAddress)) {
-      newErrors.gymAddress = 'Gym address must be between 10 and 500 characters and only include letters, numbers, and spaces.';
+      newErrors.gymAddress =
+        "Gym address must be between 10 and 500 characters and only include letters, numbers, and spaces.";
     }
-    if (!validateGymAddress(gymRules)) { // Reusing validateGymAddress for rules based on your instructions
-      newErrors.gymRules = 'Rules must only include letters, numbers, and spaces and be between 10 and 500 characters.';
+    if (!validateGymAddress(gymRules)) {
+      // Reusing validateGymAddress for rules based on your instructions
+      newErrors.gymRules =
+        "Rules must only include letters, numbers, and spaces and be between 10 and 500 characters.";
     }
     if (!gymLevel) {
-      newErrors.gymLevel = 'Please select a gym level.';
+      newErrors.gymLevel = "Please select a gym level.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) {
       return;
     }
 
-    const jwtToken = Cookies.get('jwt');
+    const jwtToken = Cookies.get("jwt");
     const payload = {
       JWT: jwtToken,
       name: gymName,
@@ -45,22 +54,22 @@ const CreateGymForm = () => {
 
     try {
       const response = await fetch(UPDATE_OR_DELETE_COACH_GYM, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create gym');
+        throw new Error(data.error || "Failed to create gym");
       }
 
-      alert('Gym created successfully.');
+      alert("Gym created successfully.");
     } catch (error) {
-      console.error('Create gym error:', error);
-      setErrors({ form: error.message });
+      console.error("Create gym error:", error);
+      setErrors({ form: (error as Error).message });
     }
   };
 
@@ -69,10 +78,15 @@ const CreateGymForm = () => {
       <div className="mx-auto max-w-lg text-center">
         <h1 className="text-2xl font-bold sm:text-3xl">Create Your Gym</h1>
       </div>
-      <form onSubmit={handleSubmit} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+      >
         {/* Gym Name */}
         <div>
-          <label htmlFor="gymName" className="sr-only">Gym Name</label>
+          <label htmlFor="gymName" className="sr-only">
+            Gym Name
+          </label>
           <input
             type="text"
             id="gymName"
@@ -81,12 +95,18 @@ const CreateGymForm = () => {
             value={gymName}
             onChange={(e) => setGymName(e.target.value)}
           />
-          {errors.gymName && <p className="text-red-500 text-xs mt-2">{errors.gymName}</p>}
+          {errors && (errors as { gymName?: string }).gymName && (
+            <p className="text-red-500 text-xs mt-2">
+              {(errors as { gymName?: string }).gymName}
+            </p>
+          )}
         </div>
 
         {/* Address */}
         <div>
-          <label htmlFor="gymAddress" className="sr-only">Address</label>
+          <label htmlFor="gymAddress" className="sr-only">
+            Address
+          </label>
           <input
             type="text"
             id="gymAddress"
@@ -95,27 +115,44 @@ const CreateGymForm = () => {
             value={gymAddress}
             onChange={(e) => setGymAddress(e.target.value)}
           />
-          {errors.gymAddress && <p className="text-red-500 text-xs mt-2">{errors.gymAddress}</p>}
+          {errors && (errors as { gymAddress?: string }).gymAddress && (
+            <p className="text-red-500 text-xs mt-2">
+              {(errors as { gymAddress?: string }).gymAddress}
+            </p>
+          )}
         </div>
 
         {/* Gym Rules */}
         <div>
-          <label htmlFor="gymRules" className="block text-sm font-medium text-gray-700"> Gym Rules </label>
+          <label
+            htmlFor="gymRules"
+            className="block text-sm font-medium text-gray-700"
+          >
+            {" "}
+            Gym Rules{" "}
+          </label>
           <textarea
             id="gymRules"
             className="mt-2 w-full rounded-lg border-gray-200 shadow-sm sm:text-sm"
-            rows="4"
+            rows={4}
             placeholder="Enter gym rules..."
             value={gymRules}
             onChange={(e) => setGymRules(e.target.value)}
           ></textarea>
-          {errors.gymRules && <p className="text-red-500 text-xs mt-2">{errors.gymRules}</p>}
+          {errors && (errors as { gymRules?: string }).gymRules && (
+            <p className="text-red-500 text-xs mt-2">
+              {(errors as { gymRules?: string }).gymRules}
+            </p>
+          )}
         </div>
 
         {/* Gym Level */}
         <fieldset className="space-y-4">
           <legend className="sr-only">Gym Level</legend>
-          {errors.gymLevel && <p className="text-red-500 text-xs mt-2">{errors.gymLevel}</p>}
+          {errors && (errors as { gymLevel?: string }).gymLevel && (
+  <p className="text-red-500 text-xs mt-2">{(errors as { gymLevel?: string }).gymLevel}</p>
+)}
+
           <div>
             <label
               htmlFor="Recreational"
@@ -131,8 +168,8 @@ const CreateGymForm = () => {
                 value="Recreational"
                 id="Recreational"
                 className="size-5 border-gray-300 text-blue-500"
-                checked={gymLevel === 'Recreational'}
-                onChange={() => setGymLevel('Recreational')}
+                checked={gymLevel === "Recreational"}
+                onChange={() => setGymLevel("Recreational")}
               />
             </label>
           </div>
@@ -152,8 +189,8 @@ const CreateGymForm = () => {
                 value="Amateur"
                 id="Amateur"
                 className="size-5 border-gray-300 text-blue-500"
-                checked={gymLevel === 'Amateur'}
-                onChange={() => setGymLevel('Amateur')}
+                checked={gymLevel === "Amateur"}
+                onChange={() => setGymLevel("Amateur")}
               />
             </label>
           </div>
@@ -173,8 +210,8 @@ const CreateGymForm = () => {
                 value="Pro"
                 id="Pro"
                 className="size-5 border-gray-300 text-blue-500"
-                checked={gymLevel === 'Pro'}
-                onChange={() => setGymLevel('Pro')}
+                checked={gymLevel === "Pro"}
+                onChange={() => setGymLevel("Pro")}
               />
             </label>
           </div>
@@ -187,7 +224,10 @@ const CreateGymForm = () => {
         >
           Create Gym
         </button>
-        {errors.form && <p className="text-red-500 text-xs mt-2">{errors.form}</p>}
+        {errors && (errors as { form?: string }).form && (
+  <p className="text-red-500 text-xs mt-2">{(errors as { form?: string }).form}</p>
+)}
+
       </form>
     </div>
   );

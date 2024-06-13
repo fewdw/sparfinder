@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event }: {event: any}) => {
   const progressPercentage = (event.participants_count / event.max_participants) * 100;
 
   return (

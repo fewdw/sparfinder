@@ -37,7 +37,7 @@ const CoachCreateEvents = () => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: { name?: string; description?: string; date?: string; time?: string; length_time?: string; location?: string; max_participants?: string } = {};
     if (!validateName(formData.name)) newErrors.name = 'Event name must be 1-100 characters long.';
     if (!validateDescription(formData.description)) newErrors.description = 'Description must be 5-500 characters long.';
     if (!validateDate(formData.date)) newErrors.date = 'Please select a future date.';
@@ -46,10 +46,11 @@ const CoachCreateEvents = () => {
     if (!formData.use_gym_location && !validateLocation(formData.location)) newErrors.location = 'Location must be 5-500 characters long.';
     if (!validateMaxParticipants(Number(formData.max_participants))) newErrors.max_participants = 'Participants must be between 2 and 100.';
     
+    
     return newErrors;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
@@ -79,7 +80,7 @@ const CoachCreateEvents = () => {
       }
     } catch (error) {
       console.error('Create event error:', error);
-      setErrors({ submit: error.message });
+      setErrors({ submit: (error as Error).message } as { submit: string });
     }
   };
 
@@ -102,8 +103,8 @@ const CoachCreateEvents = () => {
       required
       className="w-full p-2 border rounded"
     />
-    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-  </div>
+{(errors as any).name && <p className="text-red-500 text-xs mt-1">{(errors as any).name}</p>}
+</div>
   <div className="mb-4">
     <label htmlFor="description" className="block font-medium text-gray-700">Description</label>
     <textarea
@@ -113,10 +114,10 @@ const CoachCreateEvents = () => {
       onChange={handleChange}
       required
       className="w-full p-2 border rounded"
-      rows="4"
+      rows={4}
     />
-    {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
-  </div>
+{(errors as any).description && <p className="text-red-500 text-xs mt-1">{(errors as any).description}</p>}
+</div>
   <div className="mb-4">
     <label htmlFor="date" className="block font-medium text-gray-700">Date</label>
     <input
@@ -128,8 +129,8 @@ const CoachCreateEvents = () => {
       required
       className="w-full p-2 border rounded"
     />
-    {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
-  </div>
+{(errors as any).date && <p className="text-red-500 text-xs mt-1">{(errors as any).date}</p>}
+</div>
   <div className="mb-4">
     <label htmlFor="time" className="block font-medium text-gray-700">Time</label>
     <input
@@ -141,8 +142,8 @@ const CoachCreateEvents = () => {
       required
       className="w-full p-2 border rounded"
     />
-    {errors.time && <p className="text-red-500 text-xs mt-1">{errors.time}</p>}
-  </div>
+{(errors as any).time && <p className="text-red-500 text-xs mt-1">{(errors as any).time}</p>}
+</div>
   <div className="mb-4">
     <label htmlFor="length_time" className="block font-medium text-gray-700">Event Duration (hours)</label>
     <input
@@ -156,8 +157,8 @@ const CoachCreateEvents = () => {
       max="8"
       className="w-full p-2 border rounded"
     />
-    {errors.length_time && <p className="text-red-500 text-xs mt-1">{errors.length_time}</p>}
-  </div>
+{(errors as any).length_time && <p className="text-red-500 text-xs mt-1">{(errors as any).length_time}</p>}
+</div>
   <div className="mb-4 flex items-center space-x-4">
     <div className="flex-grow">
       <label htmlFor="location" className="block font-medium text-gray-700">Location</label>
@@ -171,8 +172,8 @@ const CoachCreateEvents = () => {
         disabled={formData.use_gym_location}
         className="w-full p-2 border rounded"
       />
-      {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
-    </div>
+{(errors as any).location && <p className="text-red-500 text-xs mt-1">{(errors as any).location}</p>}
+</div>
     <div>
       <label htmlFor="use_gym_location" className="flex items-center space-x-2 cursor-pointer">
         <input
@@ -200,8 +201,8 @@ const CoachCreateEvents = () => {
       max="100"
       className="w-full p-2 border rounded"
     />
-    {errors.max_participants && <p className="text-red-500 text-xs mt-1">{errors.max_participants}</p>}
-  </div>
+{(errors as any).max_participants && <p className="text-red-500 text-xs mt-1">{(errors as any).max_participants}</p>}
+</div>
   <div className="mb-4">
     <label htmlFor="is_private" className="flex items-center space-x-2 cursor-pointer">
       <input

@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { UPDATE_OR_DELETE_COACH_GYM } from '../utils/apiConfig';
 
-const GymInfoDisplay = ({ gym }) => {
+const GymInfoDisplay = ({ gym, onDeleteSuccess }: { gym: any, onDeleteSuccess: () => void }) => {
   const handleDelete = async () => {
     const jwtToken = Cookies.get('jwt');
     if (!jwtToken) {
@@ -25,10 +25,13 @@ const GymInfoDisplay = ({ gym }) => {
       }
 
       alert('Gym deleted successfully');
+      if (onDeleteSuccess) {
+        onDeleteSuccess(); // Call the onDeleteSuccess function if it's provided
+      }
       // Optionally, update the state to reflect the deletion or navigate away
     } catch (error) {
       console.error('Error deleting gym:', error);
-      alert('Failed to delete gym: ' + error.message);
+      alert('Failed to delete gym: ' + (error as Error).message);
     }
   };
 
