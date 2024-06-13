@@ -16,5 +16,9 @@ app.register_blueprint(boxer_bp, url_prefix='/sparfinder/api/boxer')
 app.register_blueprint(gym_bp, url_prefix='/sparfinder/api/gym')
 app.register_blueprint(event_bp, url_prefix='/sparfinder/api/event')
 
+@app.route('/')
+def index():
+    return {'Hello':'SparFinder Online!'},200
+
 if __name__ == '__main__':
     app.run(debug=True)
