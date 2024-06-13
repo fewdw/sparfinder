@@ -16,8 +16,11 @@ const Page = () => {
   useEffect(() => {
     const jwt = Cookies.get("jwt");
     if (jwt) {
-      const { account_type } = jwtDecode(jwt);
-      if (account_type !== "boxer" && account_type !== "coach") {
+      interface DecodedJwt {
+        account_type: string;
+      }
+      const { account_type } = jwtDecode<DecodedJwt>(jwt);
+            if (account_type !== "boxer" && account_type !== "coach") {
         router.push('/');
       } else {
         fetchCoaches();

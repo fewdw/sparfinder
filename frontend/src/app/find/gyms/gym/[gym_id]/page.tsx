@@ -17,12 +17,12 @@ const Page = () => {
         const gymData = await gymResponse.json();
         setGym(gymData);
 
-        const boxersUrl = getBoxersFromGymById(params.gym_id);
+        const boxersUrl = getBoxersFromGymById(Array.isArray(params.gym_id) ? params.gym_id[0] : params.gym_id);
         const boxersResponse = await fetch(boxersUrl);
         const boxersData = await boxersResponse.json();
         setBoxers(boxersData);
 
-        const coachesUrl = getCoachesFromGymById(params.gym_id);
+        const coachesUrl = getCoachesFromGymById(Array.isArray(params.gym_id) ? params.gym_id[0] : params.gym_id);
         const coachesResponse = await fetch(coachesUrl);
         const coachesData = await coachesResponse.json();
         setCoaches(coachesData);

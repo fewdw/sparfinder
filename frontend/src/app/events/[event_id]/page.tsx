@@ -97,10 +97,11 @@ const Page = () => {
         return <ViewEventParticipantPeopleList eventId={params.event_id} />;
       default:
         if (activeTab === 'waiting' && isAuthorized) {
-          return <CoachViewEventWaitingPeopleList eventId={params.event_id} />;
+          return <CoachViewEventWaitingPeopleList eventId={Array.isArray(params.event_id) ? params.event_id[0] : params.event_id} />
+          ;
         }
         if (activeTab === 'invited' && isAuthorized) {
-          return <CoachViewEventInvitedPeopleList eventId={params.event_id} />;
+          return <CoachViewEventInvitedPeopleList eventId={Array.isArray(params.event_id) ? params.event_id.join(", ") : params.event_id} />;
         }
         if (activeTab === 'modify' && isAuthorized) {
           return <ModifyEventForm eventId={params.event_id} />;

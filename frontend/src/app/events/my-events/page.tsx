@@ -14,7 +14,7 @@ const Page = () => {
   useEffect(() => {
     const jwt = Cookies.get("jwt");
     if (jwt) {
-      const { account_type } = jwtDecode(jwt);
+      const { account_type } = jwtDecode<{ account_type: string }>(jwt);
       if (account_type === "boxer" || account_type === "coach") {
         setAccountType(account_type);
       } else {
