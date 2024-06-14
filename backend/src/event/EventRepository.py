@@ -212,20 +212,13 @@ class EventRepository(Database):
             query.setdefault("time", {})["$gte"] = filters['min_time']
         if 'max_time' in filters:
             query.setdefault("time", {})["$lte"] = filters['max_time']
-        
-        # Handle private and public filters
-        if 'is_private' in filters or 'is_public' in filters:
-            private = filters.get('is_private', 'false').lower() in ['true', '1', 'yes']
-            public = filters.get('is_public', 'false').lower() in ['true', '1', 'yes']
-            if private and public:
-                query['private'] = {"$in": [True, False]}
-            elif private:
-                query['private'] = True
-            elif public:
-                query['private'] = False
+        if 'is_private' in filters:
+            query["private"] = filters['is_private'].lower() in ['true', '1', 'yes']
 
         if 'has_place' in filters and filters['has_place'].lower() in ['true', '1', 'yes']:
+            # Ensure the number of participants is less than max_participants
             query["$expr"] = {"$lt": [{"$size": "$participants"}, "$max_participants"]}
+
 
 
 
