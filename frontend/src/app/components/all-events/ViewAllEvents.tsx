@@ -11,17 +11,20 @@ const ViewAllEvents = () => {
     maxDate: '',
     minTime: '',
     maxTime: '',
-    isPrivate: true,  // Default to true
-    isPublic: true,   // Default to true
+    isPrivate: false,
     hasPlace: false
   });
 
   const fetchEvents = async () => {
     let url = activeTab === 'future' ? GET_ALL_EVENTS_EVENTS_PAGE_FUTURE : GET_ALL_EVENTS_EVENTS_PAGE_PAST;
     const queryParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(filters)) {
-      if (value) queryParams.append(key, value.toString());
-    }
+    if (filters.minDate) queryParams.append('min_date', filters.minDate);
+    if (filters.maxDate) queryParams.append('max_date', filters.maxDate);
+    if (filters.minTime) queryParams.append('min_time', filters.minTime);
+    if (filters.maxTime) queryParams.append('max_time', filters.maxTime);
+    if (filters.isPrivate !== undefined) queryParams.append('is_private', String(filters.isPrivate));
+    if (filters.hasPlace !== undefined) queryParams.append('has_place', String(filters.hasPlace));
+    
     url += `?${queryParams.toString()}`;
     setLoading(true);
     try {
@@ -39,7 +42,7 @@ const ViewAllEvents = () => {
     fetchEvents();
   }, [activeTab, filters]);
 
-  const handleFilterChange = (field: string, value: any) => {
+  const handleFilterChange = (field, value) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
 
@@ -49,8 +52,7 @@ const ViewAllEvents = () => {
       maxDate: '',
       minTime: '',
       maxTime: '',
-      isPrivate: true,
-      isPublic: true,
+      isPrivate: false,
       hasPlace: false
     });
   };
@@ -105,8 +107,8 @@ const ViewAllEvents = () => {
         <p>Loading...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
-{events.map((event: { uuid: string }) => <EventCard key={event.uuid} event={event} />)}
-</div>
+          {events.map(event => <EventCard key={event.uuid} event={event} />)}
+        </div>
       )}
     </div>
   );
